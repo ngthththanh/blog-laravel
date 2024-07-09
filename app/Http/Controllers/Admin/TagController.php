@@ -38,7 +38,7 @@ class TagController extends Controller
         ]);
 
         // Redirect back with a success message
-        return redirect()->route('admin.tags.index')->with('success', 'Tag created successfully.');
+        return redirect()->route('admin.tags.index');
     }
 
     /**
@@ -62,15 +62,20 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        Tag::create([
+        // Tìm Tag bằng ID
+        $tag = Tag::findOrFail($id);
+
+        // Cập nhật tên của Tag
+        $tag->update([
             'name' => $request->input('name'),
         ]);
 
-        // Redirect back with a success message
-        return redirect()->route('admin.tags.index')->with('success', 'Tag created successfully.');
+        // Redirect hoặc trả về response
+        return redirect()->route('admin.tags.index');
     }
+
 
     /**
      * Remove the specified resource from storage.

@@ -1,112 +1,69 @@
 @extends('admin.layouts.master')
-@section('title', 'Edit Category ' . $model->name)
-@section('css-libs')
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+@section('title')
+    Cập nhật danh mục {{ $model->name }}
 @endsection
 @section('content')
-    <div class="breadcrumbs">
-        <div class="breadcrumbs-inner">
-            <div class="row m-0">
-                <div class="col-sm-4">
-                    <div class="page-header float-left">
-                        <div class="page-title">
-                            <h1>Dashboard</h1>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0">Cập nhật</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Trang admin</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.categories.index') }}">Danh sách</a></li>
+                        <li class="breadcrumb-item active">Cập nhật danh mục {{ $model->name }}</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Danh mục - {{ $model->name }}</h4>
+                    <div class="flex-shrink-0">
+                        <div class="form-check form-switch form-switch-right form-switch-md">
+                            <label for="vertical-form-showcode" class="form-label text-muted">Show Code</label>
+                            <input class="form-check-input code-switcher" type="checkbox" id="vertical-form-showcode">
                         </div>
                     </div>
-                </div>
+                </div><!-- end card header -->
+                <div class="card-body">
+                    <div class="live-preview">
+                        <form action="{{ route('admin.categories.update', $model->id) }}" method="post"
+                            enctype="multipart/form-data" class="form-horizontal">
+                            @csrf
+                            @method('PUT')
+                            <div class="mb-3">
+                                <label for="employeeName" class="form-label">Tên danh mục</label>
+                                <input type="text" class="form-control" id="employeeName" name="name"
+                                    value="{{ $model->name }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Ảnh danh mục</label>
+                                <input class="form-control" type="file" id="formFile" name="cover">
+                                <img src="{{ \Storage::url($model->cover) }}" alt="" width="100px" class="mt-3">
+                            </div>
+                            <div class="form-check form-switch form-switch-success form-check-right mb-3">
+                                <input type="hidden" name="is_active" value="0"> <!-- Add this hidden input -->
+                                <input class="form-check-input" type="checkbox" role="switch" id="is_active"
+                                    @if ($model->is_active) checked @endif name="is_active" value="1">
+                                <label class="form-check-label" for="is_active">Trạng thái</label>
+                            </div>
 
-                <div class="col-sm-8">
-                    <div class="page-header float-right">
-                        <div class="page-title">
-                            <ol class="breadcrumb text-right">
-                                <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                                <li><a href="{{ route('admin.categories.index') }}">List category</a></li>
-                                <li><a href="#">@yield('title')</a></li>
-                            </ol>
-                        </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="content">
-        <div class="animated fadeIn">
-            <div class="row">
-
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong class="card-title">Data Table</strong>
-                        </div>
-
-                        <div class="card-body">
-
-                            <div class="card-body card-block">
-                                <form action="{{ route('admin.categories.update', $model->id) }}" method="post"
-                                    enctype="multipart/form-data" class="form-horizontal">
-                                    @csrf
-                                    @method('PUT') <!-- Corrected syntax here -->
-
-                                    <div class="form-group row">
-                                        <label for="name" class="col-sm-2 col-form-label">Name Category</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" id="name" name="name" value="{{ $model->name }}"
-                                                placeholder="Enter category name" class="form-control">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label for="cover" class="col-sm-2 col-form-label">Cover</label>
-                                        <div class="col-sm-10">
-                                            <input type="file" id="cover" name="cover" class="form-control-file">
-                                            <img src="{{ \Storage::url($model->cover) }}" alt="" width="100px" class="mt-3">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label for="is_active" class="col-sm-2 col-form-label">Is Active</label>
-                                        <div class="col-sm-10">
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" value="1"
-                                                    @if ($model->is_active) checked @endif name="is_active">
-                                                <label for="is_active" class="form-check-label">Active</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            <i class="fa fa-dot-circle-o"></i> Submit
-                                        </button>
-                                    </div>
-
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div><!-- .animated -->
-    </div><!-- .content -->
 @endsection
-
-@section('js-libs')
-
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/datatables.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/buttons.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/jszip.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/init/datatables-init.js') }}"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#bootstrap-data-table-export').DataTable();
-        });
-    </script>
+@section('script-libs')
+    <script src="{{ asset('theme/admin/assets/libs/prismjs/prism.js') }}"></script>
 @endsection

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -20,6 +21,7 @@ class PostController extends Controller
     public function index()
     {
         $data = Post::with(['category', 'tags'])->latest('id')->get();
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
@@ -29,7 +31,11 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::where('is_active', 1)->pluck('name', 'id')->all();
+
+        $users = User::query()->get();
+
         $tags = Tag::pluck('name', 'id')->all();
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('categories', 'tags'));
     }
 
@@ -39,10 +45,12 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $dataPost = $request->except('tags');
+
         $dataPost['is_active'] = $request->has('is_active') ? 1 : 0;
         $dataPost['is_popular'] = $request->has('is_popular') ? 1 : 0;
         $dataPost['is_show_home'] = $request->has('is_show_home') ? 1 : 0;
         $dataPost['is_trending'] = $request->has('is_trending') ? 1 : 0;
+
         $dataPost['slug'] = Str::slug($dataPost['title']) . '-' . $dataPost['sku'];
 
         if ($request->hasFile('image')) {
@@ -64,8 +72,11 @@ class PostController extends Controller
     public function show(string $id)
     {
         $post = Post::with(['category', 'tags'])->findOrFail($id);
+
         $categories = Category::pluck('name', 'id')->all();
+
         $tags = Tag::pluck('name', 'id')->all();
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('post', 'categories', 'tags'));
     }
 
@@ -75,8 +86,11 @@ class PostController extends Controller
     public function edit(string $id)
     {
         $post = Post::with(['tags'])->findOrFail($id);
+
         $categories = Category::where('is_active', 1)->pluck('name', 'id')->all();
+
         $tags = Tag::pluck('name', 'id')->all();
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('post', 'categories', 'tags'));
     }
 
@@ -86,11 +100,14 @@ class PostController extends Controller
     public function update(Request $request, string $id)
     {
         $post = Post::findOrFail($id);
+
         $dataPost = $request->except('tags');
+
         $dataPost['is_active'] = $request->has('is_active') ? 1 : 0;
         $dataPost['is_popular'] = $request->has('is_popular') ? 1 : 0;
         $dataPost['is_show_home'] = $request->has('is_show_home') ? 1 : 0;
         $dataPost['is_trending'] = $request->has('is_trending') ? 1 : 0;
+
         $dataPost['slug'] = Str::slug($dataPost['title']) . '-' . $dataPost['sku'];
 
         if ($request->hasFile('image')) {
@@ -112,8 +129,11 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         $post = Post::findOrFail($id);
+
         $post->tags()->detach();
+
         $post->delete();
+
         return redirect()->route('admin.posts.index')->with('success', 'Post deleted successfully.');
     }
 }

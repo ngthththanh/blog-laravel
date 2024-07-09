@@ -11,6 +11,8 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    const TYPE_ADMIN = 'admin';
+    const TYPE_MENBER = 'menber';
 
     /**
      * The attributes that are mass assignable.
@@ -19,9 +21,15 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
+        'introduct',
+        'phone',
+        'avatar',
         'password',
+        'type',
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -42,4 +50,5 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+   
 }

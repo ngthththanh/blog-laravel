@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,4 +59,17 @@ Route::prefix('admin')
                 Route::delete('{id}/destroy',   [TagController::class, 'destroy'])->name('destroy');
 
         });
+        Route::prefix('users')
+            ->as('users.')
+            ->group(function () {
+                Route::get('/',                 [UserController::class, 'index'])->name('index');
+                Route::get('create',            [UserController::class, 'create'])->name('create');
+                Route::post('store',            [UserController::class, 'store'])->name('store');
+                Route::get('show/{id}',         [UserController::class, 'show'])->name('show');
+                Route::get('{id}/edit',         [UserController::class, 'edit'])->name('edit');
+                Route::put('{id}/update',       [UserController::class, 'update'])->name('update');
+                Route::delete('{id}/destroy',   [UserController::class, 'destroy'])->name('destroy');
+
+        });
+
     });

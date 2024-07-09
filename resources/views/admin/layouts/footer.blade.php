@@ -1,12 +1,15 @@
-<footer class="site-footer">
-    <div class="footer-inner bg-white">
-        <div class="row">
-            <div class="col-sm-6">
-                Copyright &copy; 2024 Ela Admin
-            </div>
-            <div class="col-sm-6 text-right">
-                Designed by <a href="https://www.pinterest.com/">Colorlib</a>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6">
+            <script>
+                document.write(new Date().getFullYear())
+            </script> © Velzon.
+        </div>
+        <div class="col-sm-6">
+            <div class="text-sm-end d-none d-sm-block">
+                Design & Develop by Themesbrand
             </div>
         </div>
     </div>
-</footer>
+</div>

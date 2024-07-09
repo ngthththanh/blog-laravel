@@ -1,99 +1,132 @@
-<aside id="left-panel" class="left-panel">
-    <nav class="navbar navbar-expand-sm navbar-default">
-        <div id="main-menu" class="main-menu collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li class="active">
-                    <a href="{{ route('admin.dashboard') }}"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
-                </li>
-                {{-- <li class="menu-title">UI elements</li><!-- /.menu-title -->
-                <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false"> <i class="menu-icon fa fa-cogs"></i>Components</a>
-                    <ul class="sub-menu children dropdown-menu">
-                        <li><i class="fa fa-puzzle-piece"></i><a href="ui-buttons.html">Buttons</a></li>
-                        <li><i class="fa fa-id-badge"></i><a href="ui-badges.html">Badges</a></li>
-                        <li><i class="fa fa-bars"></i><a href="ui-tabs.html">Tabs</a></li>
 
-                        <li><i class="fa fa-id-card-o"></i><a href="ui-cards.html">Cards</a></li>
-                        <li><i class="fa fa-exclamation-triangle"></i><a href="ui-alerts.html">Alerts</a></li>
-                        <li><i class="fa fa-spinner"></i><a href="ui-progressbar.html">Progress Bars</a></li>
-                        <li><i class="fa fa-fire"></i><a href="ui-modals.html">Modals</a></li>
-                        <li><i class="fa fa-book"></i><a href="ui-switches.html">Switches</a></li>
-                        <li><i class="fa fa-th"></i><a href="ui-grids.html">Grids</a></li>
-                        <li><i class="fa fa-file-word-o"></i><a href="ui-typgraphy.html">Typography</a></li>
-                    </ul>
-                </li> --}}
-                <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Categogy</a>
-                    <ul class="sub-menu children dropdown-menu">
-                        <li><i class="fa fa-table"></i><a href="{{ route('admin.categories.index') }}">List category</a>
-                        </li>
-                        <li><i class="fa fa-table"></i><a href="{{ route('admin.categories.create') }}">Create
-                                category</a></li>
-                    </ul>
-                </li>
-                <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false"> <i class="menu-icon fa fa-th"></i>Post</a>
-                    <ul class="sub-menu children dropdown-menu">
-                        <li><i class="menu-icon fa fa-th"></i><a href="{{ route('admin.posts.index') }}">List post</a></li>
-                        <li><i class="menu-icon fa fa-th"></i><a href="{{ route('admin.posts.create') }}">Create post</a></li>
-                    </ul>
-                </li>
-                <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false"> <i class="menu-icon fa fa-th"></i>Tag</a>
-                    <ul class="sub-menu children dropdown-menu">
-                        <li><i class="menu-icon fa fa-th"></i><a href="{{ route('admin.tags.index') }}">List tag</a></li>
-                        <li><i class="menu-icon fa fa-th"></i><a href="{{ route('admin.tags.create') }}">Create tag</a></li>
-                    </ul>
-                </li>
+<!-- Left Sidebar End -->
+    <!-- LOGO -->
+    <div class="navbar-brand-box" >
+        <!-- Dark Logo-->
+        <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
+            <span class="logo-sm">
+                <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt="" height="22">
+            </span>
+            <span class="logo-lg">
+                <img src="{{ asset('theme/admin/assets/images/logo-dark.png') }}" alt="" height="17">
+            </span>
+        </a>
+        <!-- Light Logo-->
+        <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
+            <span class="logo-sm">
+                <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt="" height="22">
+            </span>
+            <span class="logo-lg">
+                <img src="{{ asset('theme/admin/assets/images/logo-light.png') }}" alt="" height="17">
+            </span>
+        </a>
+        <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+            id="vertical-hover">
+            <i class="ri-record-circle-line"></i>
+        </button>
+    </div>
 
-                {{-- <li class="menu-title">Icons</li><!-- /.menu-title -->
+    <div id="scrollbar">
+        <div class="container-fluid">
 
-                <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>Icons</a>
-                    <ul class="sub-menu children dropdown-menu">
-                        <li><i class="menu-icon fa fa-fort-awesome"></i><a href="font-fontawesome.html">Font Awesome</a>
-                        </li>
-                        <li><i class="menu-icon ti-themify-logo"></i><a href="font-themify.html">Themefy Icons</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="widgets.html"> <i class="menu-icon ti-email"></i>Widgets </a>
-                </li>
-                <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false"> <i class="menu-icon fa fa-bar-chart"></i>Charts</a>
-                    <ul class="sub-menu children dropdown-menu">
-                        <li><i class="menu-icon fa fa-line-chart"></i><a href="charts-chartjs.html">Chart JS</a></li>
-                        <li><i class="menu-icon fa fa-area-chart"></i><a href="charts-flot.html">Flot Chart</a></li>
-                        <li><i class="menu-icon fa fa-pie-chart"></i><a href="charts-peity.html">Peity Chart</a></li>
-                    </ul>
+            <div id="two-column-menu">
+            </div>
+            <ul class="navbar-nav" id="navbar-nav">
+                <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
+                    </a>
+                </li> <!-- end Dashboard Menu -->
+
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarCategory" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarCategory">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Danh mục</span>
+
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarCategory">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.categories.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.categories.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
 
-                <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false"> <i class="menu-icon fa fa-area-chart"></i>Maps</a>
-                    <ul class="sub-menu children dropdown-menu">
-                        <li><i class="menu-icon fa fa-map-o"></i><a href="maps-gmap.html">Google Maps</a></li>
-                        <li><i class="menu-icon fa fa-street-view"></i><a href="maps-vector.html">Vector Maps</a></li>
-                    </ul>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarPost" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarPost">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Bài viết</span>
+
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarPost">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.posts.index') }}" class="nav-link" data-key="t-horizontal">Danh
+                                    sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.posts.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
-                <li class="menu-title">Extras</li><!-- /.menu-title -->
-                <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false"> <i class="menu-icon fa fa-glass"></i>Pages</a>
-                    <ul class="sub-menu children dropdown-menu">
-                        <li><i class="menu-icon fa fa-sign-in"></i><a href="page-login.html">Login</a></li>
-                        <li><i class="menu-icon fa fa-sign-in"></i><a href="page-register.html">Register</a></li>
-                        <li><i class="menu-icon fa fa-paper-plane"></i><a href="pages-forget.html">Forget Pass</a>
-                        </li>
-                    </ul>
-                </li> --}}
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarTag" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarTag">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Thẻ</span>
+
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarTag">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.tags.index') }}" class="nav-link" data-key="t-horizontal">Danh
+                                    sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.tags.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarUser" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarUser">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Người dùng</span>
+
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarUser">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.users.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh
+                                    sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.users.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
             </ul>
-        </div><!-- /.navbar-collapse -->
-    </nav>
-</aside>
+        </div>
+        <!-- Sidebar -->
+    </div>
+
+    <div class="sidebar-background"></div>

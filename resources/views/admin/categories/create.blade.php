@@ -1,110 +1,71 @@
 @extends('admin.layouts.master')
-@section('title', 'Add new Category')
-@section('css-libs')
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+@section('title')
+    Thêm mới danh mục
 @endsection
 @section('content')
-    <div class="breadcrumbs">
-        <div class="breadcrumbs-inner">
-            <div class="row m-0">
-                <div class="col-sm-4">
-                    <div class="page-header float-left">
-                        <div class="page-title">
-                            <h1>Dashboard</h1>
-                        </div>
-                    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0">Thêm mới</h4>
+
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Trang admin</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.categories.index') }}">Danh sách</a></li>
+                        <li class="breadcrumb-item active">Thêm mới</li>
+                    </ol>
                 </div>
 
-                <div class="col-sm-8">
-                    <div class="page-header float-right">
-                        <div class="page-title">
-                            <ol class="breadcrumb text-right">
-                                <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                                <li><a href="{{ route('admin.categories.index') }}">List category</a></li>
-                                <li><a href="#">@yield('title')</a></li>
-                            </ol>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Thêm mới danh mục</h4>
+                    <div class="flex-shrink-0">
+                        <div class="form-check form-switch form-switch-right form-switch-md">
+                            <label for="vertical-form-showcode" class="form-label text-muted">Show
+                                Code</label>
+                            <input class="form-check-input code-switcher" type="checkbox" id="vertical-form-showcode">
                         </div>
+                    </div>
+                </div><!-- end card header -->
+                <div class="card-body">
+                    <div class="live-preview">
+                        <form action="{{ route('admin.categories.store') }}" method="post" enctype="multipart/form-data"
+                            class="form-horizontal">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="employeeName" class="form-label">Tên danh mục</label>
+                                <input type="text" class="form-control" id="employeeName" name="name"
+                                    placeholder="Nhập tên danh mục">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Ảnh danh mục</label>
+                                <input class="form-control" type="file" id="formFile" name="cover">
+                            </div>
+
+                            <div class="form-check form-switch form-check-right mb-3">
+                                <input class="form-check-input" type="checkbox" id="is_active" name="is_active"
+                                    class="form-check-input" value="1" checked>
+                                <label class="form-check-label" for="flexSwitchCheckRightDisabled">Trạng thái</label>
+                            </div>
+
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Thêm </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="content">
-        <div class="animated fadeIn">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong class="card-title">Data Table</strong>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="card-body card-block">
-
-                                <form action="{{ route('admin.categories.store') }}" method="post"
-                                    enctype="multipart/form-data" class="form-horizontal">
-                                    @csrf
-                                    <div class="form-group row">
-                                        <label for="name" class="col-sm-2 col-form-label">Name Category</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" id="name" name="name"
-                                                placeholder="Enter category name" class="form-control">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label for="cover" class="col-sm-2 col-form-label">Cover</label>
-                                        <div class="col-sm-10">
-                                            <input type="file" id="cover" name="cover" class="form-control-file">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label for="is_active" class="col-sm-2 col-form-label">Is Active</label>
-                                        <div class="col-sm-10">
-                                            <div class="form-check">
-                                                <input type="checkbox" id="is_active" name="is_active"
-                                                    class="form-check-input" value="1" checked>
-                                                <label for="is_active" class="form-check-label">Active</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            <i class="fa fa-dot-circle-o"></i> Submit
-                                        </button>
-                                        <button type="reset" class="btn btn-danger btn-sm">
-                                            <i class="fa fa-ban"></i> Reset
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div><!-- .animated -->
-    </div><!-- .content -->
 @endsection
-
-@section('js-libs')
-
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/datatables.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/buttons.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/jszip.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/lib/data-table/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/init/datatables-init.js') }}"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#bootstrap-data-table-export').DataTable();
-        });
-    </script>
+@section('script-libs')
+    <script src="{{ asset('theme/admin/assets/libs/prismjs/prism.js') }}"></script>
 @endsection

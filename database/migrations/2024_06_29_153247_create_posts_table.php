@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('sku')->unique();
             $table->string('image')->nullable();
             $table->string('author');
-            $table->string('description')->nullable();
-            $table->string('content')->nullable();
+            $table->longtext('description')->nullable();
+            $table->longtext('content')->nullable();
             $table->unsignedBigInteger('view')->default(0);
             $table->boolean('is_active')->default(true);
             $table->boolean('is_trending')->default(false);

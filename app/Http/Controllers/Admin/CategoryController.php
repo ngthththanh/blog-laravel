@@ -17,6 +17,7 @@ class CategoryController extends Controller
     public function index()
     {
         $data = Category::query()->latest('id')->get();
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
@@ -34,16 +35,21 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $data = $request->except(('cover'));
+
         $data['is_active'] ??= 0;
+
         if($request->hasFile('cover')){
             $data['cover'] = Storage::put(self::PATH_UPLOAD, $request->file('cover'));
         }
+
         Category::query()->create($data);
+
         return redirect()->route('admin.categories.index');
     }
 
     /**
      * Display the specified resource.
+     *
      */
     public function show(string $id)
     {
@@ -57,6 +63,7 @@ class CategoryController extends Controller
     public function edit(string $id)
     {
         $model = Category::query()->findOrFail($id);
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('model'));
     }
 
@@ -79,7 +86,7 @@ class CategoryController extends Controller
             $currentCover = $model->cover;
 
             // Lưu file 'cover' mới vào storage và cập nhật đường dẫn vào database
-            $data['cover'] = $request->file('cover')->store('public/covers');
+            $data['cover'] = Storage::put(self::PATH_UPLOAD, $request->file('cover'));
 
             // Xóa file ảnh cũ nếu tồn tại và không phải là file mặc định
             if ($currentCover && $currentCover !== 'default.jpg' && Storage::exists($currentCover)) {
