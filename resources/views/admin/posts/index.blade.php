@@ -14,7 +14,7 @@
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard')}}">Trang admin</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Trang admin</a></li>
                         <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
@@ -52,6 +52,9 @@
                                 <th>Ảnh bài viết</th>
                                 <th>Thẻ</th>
                                 <th>Trạng thái</th>
+                                <th>Thịnh hành</th>
+                                <th>Phổ biến</th>
+                                <th>Trạng thái</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -70,17 +73,27 @@
                                     <td>{{ $item->sku }}</td>
                                     <td>{{ $item->category->name }}</td>
                                     <td>
-                                        <img src="{{ Storage::url($item->image) }}"
-                                            width="100px">
+                                        <img src="{{ Storage::url($item->image) }}" width="100px">
                                     </td>
                                     <td>
                                         @foreach ($item->tags as $tag)
                                             <span class="badge bg-secondary">{{ $tag->name }}</span>
                                         @endforeach
                                     </td>
-                                    <td>{!! $item->is_active
-                                        ? '<span class="badge bg-success">Active</span>'
-                                        : '<span class="badge bg-danger">Inactive</span>' !!}
+                                    <td>
+                                        {!! $item->is_active
+                                            ? '<span class="badge bg-success">Active</span>'
+                                            : '<span class="badge bg-black">Not active</span>' !!}
+                                    </td>
+                                    <td>
+                                        {!! $item->is_trending
+                                            ? '<span class="badge bg-danger">Trending</span>'
+                                            : '<span class="badge bg-black">Not trending</span>' !!}
+                                    </td>
+                                    <td>
+                                        {!! $item->is_popular
+                                            ? '<span class="badge bg-warning">Popular</span>'
+                                            : '<span class="badge bg-black">Not poplular</span>' !!}
                                     </td>
                                     <td>
                                         <div class="dropdown d-inline-block">

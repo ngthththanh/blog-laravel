@@ -9,49 +9,37 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     const PATH_VIEW = 'admin.posts.';
     const PATH_UPLOAD = 'posts';
 
     public function index()
     {
-        $data = Post::with(['category', 'tags'])->latest('id')->get();
-
+        $data = Post::with(['category', 'tags', 'user'])->latest('id')->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $categories = Category::where('is_active', 1)->pluck('name', 'id')->all();
-
-        $users = User::query()->get();
-
         $tags = Tag::pluck('name', 'id')->all();
+        $authorName = Auth::user()->name;
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('categories', 'tags'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('categories', 'tags', 'authorName'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $dataPost = $request->except('tags');
-
         $dataPost['is_active'] = $request->has('is_active') ? 1 : 0;
         $dataPost['is_popular'] = $request->has('is_popular') ? 1 : 0;
         $dataPost['is_show_home'] = $request->has('is_show_home') ? 1 : 0;
         $dataPost['is_trending'] = $request->has('is_trending') ? 1 : 0;
-
         $dataPost['slug'] = Str::slug($dataPost['title']) . '-' . $dataPost['sku'];
+        $dataPost['user_id'] = Auth::id();  // Set the logged-in user as the post author
 
         if ($request->hasFile('image')) {
             $dataPost['image'] = $request->file('image')->store('posts', 'public');
@@ -66,49 +54,36 @@ class PostController extends Controller
         return redirect()->route('admin.posts.index')->with('success', 'Post created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        $post = Post::with(['category', 'tags'])->findOrFail($id);
+        $post = Post::with(['category', 'tags', 'user'])->findOrFail($id);
+        $categories = Category::pluck('name', 'id')->all(); // Assuming you want to display all categories
+        $tags = Tag::pluck('name', 'id')->all(); // Assuming you want to display all tags
 
-        $categories = Category::pluck('name', 'id')->all();
-
-        $tags = Tag::pluck('name', 'id')->all();
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('post', 'categories', 'tags'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $post = Post::with(['tags'])->findOrFail($id);
-
         $categories = Category::where('is_active', 1)->pluck('name', 'id')->all();
-
         $tags = Tag::pluck('name', 'id')->all();
+
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('post', 'categories', 'tags'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $post = Post::findOrFail($id);
-
         $dataPost = $request->except('tags');
-
         $dataPost['is_active'] = $request->has('is_active') ? 1 : 0;
         $dataPost['is_popular'] = $request->has('is_popular') ? 1 : 0;
         $dataPost['is_show_home'] = $request->has('is_show_home') ? 1 : 0;
         $dataPost['is_trending'] = $request->has('is_trending') ? 1 : 0;
-
         $dataPost['slug'] = Str::slug($dataPost['title']) . '-' . $dataPost['sku'];
+        $dataPost['user_id'] = Auth::id();  // Set the logged-in user as the post author
 
         if ($request->hasFile('image')) {
             $dataPost['image'] = $request->file('image')->store('posts', 'public');
@@ -123,15 +98,10 @@ class PostController extends Controller
         return redirect()->route('admin.posts.index')->with('success', 'Post updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $post = Post::findOrFail($id);
-
         $post->tags()->detach();
-
         $post->delete();
 
         return redirect()->route('admin.posts.index')->with('success', 'Post deleted successfully.');

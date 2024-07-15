@@ -29,7 +29,7 @@
         </div>
     </div>
     <!-- end page title -->
-    <form action="{{ route('admin.posts.update', $post->id ) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.posts.update', $post->id) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">
@@ -53,14 +53,16 @@
                                     <label class="form-label">Danh mục bài viết</label>
                                     <select class="js-example-basic-single" name="category_id">
                                         @foreach ($categories as $id => $name)
-                                                <option value="{{ $id }}" {{ $id == $post->category_id ? 'selected' : '' }}>{{ $name }}</option>
-                                            @endforeach
+                                            <option value="{{ $id }}"
+                                                {{ $id == $post->category_id ? 'selected' : '' }}>{{ $name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="employeeName" class="form-label">Tiêu đề bài viết</label>
                                     <input type="text" class="form-control" id="employeeName" name="title"
-                                        value="{{ ( $post->title) }}">
+                                        value="{{ $post->title }}">
                                 </div>
                                 <div class="mb-3">
                                     <label for="formFile" class="form-label">Ảnh bài viết</label>
@@ -70,15 +72,18 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="employeeName" class="form-label">Mã bài viết</label>
-                                    <input type="text" class="form-control" id="employeeName" name="sku" value="{{ $post->sku }}" readonly>
+                                    <input type="text" class="form-control" id="employeeName" name="sku"
+                                        value="{{ $post->sku }}" readonly>
                                 </div>
                                 <div class="mb-3">
                                     <label for="employeeName" class="form-label">Slug bài viết</label>
-                                    <input type="text" class="form-control" id="employeeName" name="sku" value="{{ $post->slug }}" readonly>
+                                    <input type="text" class="form-control" id="employeeName" name="sku"
+                                        value="{{ $post->slug }}" readonly>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="employeeName" class="form-label">Tác giả</label>
-                                    <input type="text" class="form-control" id="employeeEmail" name="author" placeholder="Nhập tên tác giả" value="{{ $post->author }}">
+                                    <label for="employeeName" class="form-label">Tác giả bài viết</label>
+                                    <input type="text" class="form-control" id="employeeEmail" name="user_id"
+                                        value="{{ $post->user->name }}" readonly>
                                 </div>
                                 <div class="mb-3">
                                     <label for="employeeName" class="form-label">Mô tả ngắn</label>
@@ -89,37 +94,39 @@
                                     <textarea class="form-control" id="exampleFormControlTextarea5" rows="5" name="content">{{ $post->content }}</textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="employeeName" class="form-label">Thẻ bài viết</label>
-                                    <select class="js-example-basic-multiple" name="tags[]" multiple="multiple">
+                                    <label for="tags" class="form-label">Thẻ bài viết</label>
+                                    <select class="js-example-basic-multiple" name="tags[]" multiple="multiple"
+                                        id="tags">
+                                        @php($postTags = $post->tags->pluck('id')->all())
                                         @foreach ($tags as $id => $name)
-                                            <option value="{{ $id }}">{{ $name }}</option>
+                                            <option @selected(in_array($id, $postTags)) value="{{ $id }}">
+                                                {{ $name }}</option>
                                         @endforeach
                                     </select>
+
+
                                 </div>
+
                                 <!-- Row 2 -->
                                 <div class="mb-3 d-flex justify-content-start">
                                     <div class="form-check form-switch form-switch-success">
-                                        <input type="hidden" name="is_active" value="0">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="is_active"
-                                            @if ($post->is_active) checked @endif name="is_active" value="1">
-                                        <label class="form-check-label" for="is_active">Trạng thái</label>
+                                        <input class="form-check-input" type="checkbox" value="1" role="switch" id="is_active" name="is_active" {{ old('is_active', $post->is_active ?? 0) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="is_active">Is active</label>
                                     </div>
                                     <div class="form-check form-switch form-switch-danger ms-3">
-                                        <input type="hidden" name="is_trending" value="0">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="is_trending" name="is_trending" value="1">
+                                        <input class="form-check-input" type="checkbox" value="1" role="switch" id="is_trending" name="is_trending" {{ old('is_trending', $post->is_trending ?? 0) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="is_trending">Is trending</label>
                                     </div>
                                     <div class="form-check form-switch form-switch-warning ms-3">
-                                        <input type="hidden" name="is_popular" value="0">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="is_popular" name="is_popular" value="1">
+                                        <input class="form-check-input" type="checkbox" value="1" role="switch" id="is_popular" name="is_popular" {{ old('is_popular', $post->is_popular ?? 0) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="is_popular">Is popular</label>
                                     </div>
                                     <div class="form-check form-switch form-switch-secondary ms-3">
-                                        <input type="hidden" name="is_show_home" value="0">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="is_show_home" name="is_show_home" value="1" checked>
+                                        <input class="form-check-input" type="checkbox" role="switch" value="1" id="is_show_home" name="is_show_home" {{ old('is_show_home', $post->is_show_home ?? 0) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="is_show_home">Is show home</label>
                                     </div>
                                 </div>
+
 
                             </div>
                         </div>
@@ -139,7 +146,8 @@
 @endsection
 @section('script-libs')
     <!-- jquery cdn -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!-- select2 cdn -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- ckeditor -->

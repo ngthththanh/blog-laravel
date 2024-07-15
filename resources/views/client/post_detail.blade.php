@@ -1,5 +1,7 @@
 @extends('client.layouts.master')
-@section('title', 'Reader | Hugo Personal Blog')
+@section('title')
+    Chi tiết bài viết {{ $post->title }}
+@endsection
 @section('content')
     <section class="section">
         <div class="container">
@@ -39,7 +41,7 @@
                         </ul>
                         <div class="content">
                             <p class="fw-bolder">{{ $post->description }}</p>
-                            <p>{{ $post->content }}</p>
+                            <p>{!! nl2br(e($post->content)) !!}</p>
                         </div>
                     </article>
 

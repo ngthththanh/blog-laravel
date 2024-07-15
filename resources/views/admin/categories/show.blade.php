@@ -54,7 +54,7 @@
                                 <div class="ms-3">
                                     {!! $model->is_active
                                         ? '<span class="badge bg-success">Active</span>'
-                                        : '<span class="badge bg-danger">Inactive</span>' !!}
+                                        : '<span class="badge bg-black">Not active</span>' !!}
                                 </div>
                             </div>
                         </form>

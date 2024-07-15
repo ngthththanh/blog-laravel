@@ -9,7 +9,7 @@
 @endsection
 
 @section('title')
-   Chi tiết bài viết {{ $post->title }}
+    Chi tiết bài viết {{ $post->title }}
 @endsection
 
 @section('content')
@@ -29,7 +29,7 @@
         </div>
     </div>
     <!-- end page title -->
-    <form action="{{ route('admin.posts.update', $post->id ) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.posts.update', $post->id) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">
@@ -52,12 +52,12 @@
                                 <div class="mb-3">
                                     <label class="form-label">Danh mục bài viết</label>
                                     <input type="text" class="form-control" id="employeeName" name="title"
-                                    value="{{ ( $post->category->name) }}" readonly>
+                                        value="{{ $post->category->name }}" readonly>
                                 </div>
                                 <div class="mb-3">
                                     <label for="employeeName" class="form-label">Tiêu đề bài viết</label>
                                     <input type="text" class="form-control" id="employeeName" name="title"
-                                        value="{{ ( $post->title) }}" readonly>
+                                        value="{{ $post->title }}" readonly>
                                 </div>
                                 <div class="mb-3">
                                     <label for="formFile" class="form-label">Ảnh bài viết</label>
@@ -65,15 +65,18 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="employeeName" class="form-label">Mã bài viết</label>
-                                    <input type="text" class="form-control" id="employeeName" name="sku" value="{{ $post->sku }}" readonly>
+                                    <input type="text" class="form-control" id="employeeName" name="sku"
+                                        value="{{ $post->sku }}" readonly>
                                 </div>
                                 <div class="mb-3">
                                     <label for="employeeName" class="form-label">Slug bài viết</label>
-                                    <input type="text" class="form-control" id="employeeName" name="sku" value="{{ $post->slug }}" readonly>
+                                    <input type="text" class="form-control" id="employeeName" name="sku"
+                                        value="{{ $post->slug }}" readonly>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="employeeName" class="form-label">Tác giả</label>
-                                    <input type="text" class="form-control" id="employeeEmail" name="author" placeholder="Nhập tên tác giả" value="{{ $post->author }}" readonly>
+                                    <label for="employeeName" class="form-label">Tác giả bài viết</label>
+                                    <input type="text" class="form-control" id="employeeEmail" name="user_id"
+                                        value="{{ $post->user->name }}" readonly>
                                 </div>
                                 <div class="mb-3">
                                     <label for="employeeName" class="form-label">Mô tả ngắn</label>
@@ -86,32 +89,40 @@
                                 <div class="mb-3">
                                     <label for="employeeName" class="form-label">Thẻ bài viết</label>
                                     <input type="text" class="form-control" id="employeeName" name="title"
-                                    value="{{ $post->tags->pluck('name')->implode(', ') }}" readonly>
+                                        value="{{ $post->tags->pluck('name')->implode(', ') }}" readonly>
                                 </div>
                                 <!-- Row 2 -->
                                 <div class="mb-3 d-flex justify-content-start">
                                     <div class="form-check form-switch form-switch-success">
-                                        <input type="hidden" name="is_active" value="0">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="is_active"
-                                            @if ($post->is_active) checked @endif name="is_active" value="1" readonly>
-                                        <label class="form-check-label" for="is_active">Trạng thái</label>
+                                        {!! $post->is_active
+                                            ? '<span class="badge bg-success">Active</span>'
+                                            : '<span class="badge bg-black">Not active</span>' !!}
+
+                                        <label class="form-check-label" for="is_active">Is active</label>
                                     </div>
+
                                     <div class="form-check form-switch form-switch-danger ms-3">
-                                        <input type="hidden" name="is_trending" value="0">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="is_trending" name="is_trending" value="1" readonly>
+                                        {!! $post->is_trending
+                                            ? '<span class="badge bg-danger">Trending</span>'
+                                            : '<span class="badge bg-black">Not trending</span>' !!}
                                         <label class="form-check-label" for="is_trending">Is trending</label>
                                     </div>
+
                                     <div class="form-check form-switch form-switch-warning ms-3">
-                                        <input type="hidden" name="is_popular" value="0">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="is_popular" name="is_popular" value="1" readonly>
+                                        {!! $post->is_popular
+                                            ? '<span class="badge bg-warning">Popular</span>'
+                                            : '<span class="badge bg-black">Not popular</span>' !!}
                                         <label class="form-check-label" for="is_popular">Is popular</label>
                                     </div>
+
                                     <div class="form-check form-switch form-switch-secondary ms-3">
-                                        <input type="hidden" name="is_show_home" value="0">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="is_show_home" name="is_show_home" value="1" checked readonly>
+                                        {!! $post->is_show_home
+                                            ? '<span class="badge bg-info">Show home</span>'
+                                            : '<span class="badge bg-black">Not show home</span>' !!}
                                         <label class="form-check-label" for="is_show_home">Is show home</label>
                                     </div>
                                 </div>
+
 
                             </div>
                         </div>
@@ -123,7 +134,8 @@
 @endsection
 @section('script-libs')
     <!-- jquery cdn -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!-- select2 cdn -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- ckeditor -->

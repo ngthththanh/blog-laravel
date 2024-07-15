@@ -69,9 +69,17 @@
                                 <textarea class="form-control" id="exampleFormControlTextarea5" readonly rows="5" name="introduct"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="employeeName" class="form-label">Mật khẩu</label>
-                                <input type="password" class="form-control" id="employeeName" name="password" readonly
-                                    value="{{ $user->password }}">
+                                <label for="password" class="form-label">Password:</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password" name="password" readonly
+                                        value="{{ $user->password }}">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" onclick="togglePasswordVisibility()">
+                                            <i id="password-icon" class="fa-solid fa-eye"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <small class="form-text text-muted">Leave blank to keep the current password.</small>
                             </div>
                             <div class="mb-3">
                                 <label for="employeeName" class="form-label">Vai trò</label>
@@ -94,4 +102,21 @@
 @endsection
 @section('script-libs')
     <script src="{{ asset('theme/admin/assets/libs/prismjs/prism.js') }}"></script>
+    <script src="https://kit.fontawesome.com/1108eef025.js" crossorigin="anonymous"></script>
+    <script>
+        function togglePasswordVisibility() {
+            var passwordField = document.getElementById('password');
+            var passwordIcon = document.getElementById('password-icon');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                passwordIcon.classList.remove('fa-eye');
+                passwordIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                passwordIcon.classList.remove('fa-eye-slash');
+                passwordIcon.classList.add('fa-eye');
+            }
+        }
+        </script>
+
 @endsection

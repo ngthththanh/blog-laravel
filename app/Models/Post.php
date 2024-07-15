@@ -10,6 +10,7 @@ class Post extends Model
     use HasFactory;
     protected $fillable = [
         'category_id',
+        'user_id',
         'title',
         'slug',
         'sku',
@@ -39,5 +40,10 @@ class Post extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
-    
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

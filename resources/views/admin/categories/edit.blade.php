@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @section('title')
-    Cập nhật danh mục {{ $model->name }}
+    Cập nhật {{ $model->name }}
 @endsection
 @section('content')
     <div class="row">

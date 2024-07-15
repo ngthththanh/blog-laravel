@@ -45,7 +45,7 @@
                                     </div>
                                 </th>
                                 <th data-ordering="false">ID</th>
-                                <th data-ordering="false">Tên</th>
+                                <th data-ordering="false">Tên Danh mục</th>
                                 <th>Ảnh </th>
                                 <th>Trạng thái</th>
                                 <th>Hành động</th>
@@ -66,7 +66,7 @@
                                     <td><img src="{{ Storage::url($item->cover) }}" width="100px"></td>
                                     <td>{!! $item->is_active
                                         ? '<span class="badge bg-success">Active</span>'
-                                        : '<span class="badge bg-danger">Inactive</span>' !!}</td>
+                                        : '<span class="badge bg-black">Not active</span>' !!}</td>
                                     <td>
                                         <div class="dropdown d-inline-block">
                                             <button class="btn btn-soft-secondary btn-sm dropdown" type="button"

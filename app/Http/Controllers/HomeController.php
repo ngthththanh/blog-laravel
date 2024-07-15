@@ -27,15 +27,18 @@ class HomeController extends Controller
     {
         //Lấy dữ liệu từ bảng tags
         $tags = DB::table('tags')->pluck('name')->all();
-
+        $users = DB::table('users')->pluck('name')->all();
         //Lấy dữ liệu từ bảng categories
-        $categories = DB::table('categories')->where('is_active', '1')->pluck('name')->all();
+        $categories = DB::table('categories')->where('is_active', '1')->get();
 
         // Lấy dữ liệu từ bảng posts
-        $posts = Post::with('tags')->get();
+        $posts = Post::with('tags', 'user')->orderBy('id','desc')->get();
 
         // Lấy dữ liệu bài viết mới nhất từ bảng posts
-        $post_new = Post::with('tags')->orderBy('created_at', 'desc')->first();
+        $post_new = Post::with(['tags', 'user'])
+            ->orderBy('created_at', 'desc')
+            ->first();
+
 
         // Lấy các bài viết đang trending (3 bài mới nhất)
         $post_trending = Post::with('tags')
@@ -45,7 +48,7 @@ class HomeController extends Controller
             ->get();
 
         // Lấy bài viết phổ biến (1 bài mới nhất)
-        $post_popular = Post::with('tags')
+        $post_popular = Post::with('tags', 'user')
             ->where('is_popular', 1)
             ->orderBy('created_at', 'desc')
             ->first();
@@ -59,7 +62,8 @@ class HomeController extends Controller
                 'post_popular' => $post_popular,
                 'post_new' => $post_new,
                 'categories' => $categories,
-                'tags' => $tags
+                'tags' => $tags,
+                'users' => $users,
             ]
         );
     }

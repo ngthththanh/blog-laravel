@@ -17,9 +17,8 @@ class PostDetailController extends Controller
         $tags = DB::table('tags')->pluck('name')->all();
 
         //Lấy dữ liệu từ bảng categories
-        $categories = DB::table('categories')->pluck('name')->all();
-
-           // Lấy bài viết theo ID
+        $categories = DB::table('categories')->where('is_active', '1')->get();
+        // Lấy bài viết theo ID
         $post = Post::with('tags')->find($id);
 
         // Kiểm tra xem bài viết có tồn tại không
@@ -30,8 +29,8 @@ class PostDetailController extends Controller
         // Truyền dữ liệu ra view
 
         return view(
-            'client/post_detail',['post'=> $post,'tags' => $tags, 'categories' => $categories]
+            'client/post_detail',
+            ['post' => $post, 'tags' => $tags, 'categories' => $categories]
         );
     }
-
 }

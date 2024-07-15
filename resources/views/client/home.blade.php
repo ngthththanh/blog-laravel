@@ -1,5 +1,7 @@
 @extends('client.layouts.master')
-@section('title', 'Reader | Hugo Personal Blog')
+@section('title')
+    Reader | Hugo Personal Blog
+@endsection
 @section('content')
     @include('client.layouts.banner')
     <!-- end of banner -->
@@ -11,7 +13,7 @@
                     @if ($post_new)
                         <article class="card">
                             <div class="post-slider slider-sm">
-                                @if (isset($post_new->image))
+                                @if ($post_new->image)
                                     <img src="{{ \Storage::url($post_new->image) }}" class="card-img-top" alt="post-thumb">
                                 @else
                                     <!-- Nếu không có ảnh, có thể để trống src -->
@@ -27,12 +29,10 @@
                                         <a href="{{ route('post_detail.index', ['id' => $post_new->id]) }}"
                                             class="card-meta-author">
                                             @if ($post_new->user->avatar)
-                                            <img src="{{ \Storage::url($post_new->user->avatar) }}" alt="Author Avatar">
-                                        @else
-                                            <!-- Default avatar or placeholder image -->
-                                            <img src="{{ asset('path_to_default_avatar.jpg') }}" alt="Default Avatar">
-                                        @endif
-                                            <span>{{ $post_new->author }}</span>
+                                                <img src="{{ \Storage::url($post_new->user->avatar) }}" alt="Author Avatar">
+                                            @else
+                                            @endif
+                                            <span>{{ $post_new->user->name }}</span>
                                         </a>
                                     </li>
                                     <li class="list-inline-item">
@@ -58,6 +58,7 @@
                         </article>
                     @endif
                 </div>
+
                 <div class="col-lg-4 mb-5">
                     <h2 class="h5 section-title">Bài viết thịnh hành</h2>
                     @foreach ($post_trending as $post)
@@ -91,7 +92,7 @@
                 </div>
 
                 <div class="col-lg-4 mb-5">
-                    <h2 class="h5 section-title">Bài viết phổ</h2>
+                    <h2 class="h5 section-title">Bài viết phổ biến</h2>
                     @if ($post_popular)
                         <article class="card">
                             <div class="post-slider slider-sm">
@@ -104,12 +105,18 @@
                             </div>
                             <div class="card-body">
                                 <h3 class="h4 mb-3"><a class="post-title"
-                                        href="{{ route('post_detail.index', ['id' => $post_popular->id]) }}">{{ $post_popular->title }}</a></h3>
+                                        href="{{ route('post_detail.index', ['id' => $post_popular->id]) }}">{{ $post_popular->title }}</a>
+                                </h3>
                                 <ul class="card-meta list-inline">
                                     <li class="list-inline-item">
-                                        <a href="{{ route('post_detail.index', ['id' => $post_popular->id]) }}" class="card-meta-author">
-                                            <img src="" alt="">
-                                            <span>{{ $post_popular->author }}</span>
+                                        <a href="{{ route('post_detail.index', ['id' => $post_new->id]) }}"
+                                            class="card-meta-author">
+                                            @if ($post_new->user->avatar)
+                                                <img src="{{ \Storage::url($post_new->user->avatar) }}"
+                                                    alt="Author Avatar">
+                                            @else
+                                            @endif
+                                            <span>{{ $post_new->user->name }}</span>
                                         </a>
                                     </li>
                                     <li class="list-inline-item">
@@ -129,7 +136,8 @@
                                     </li>
                                 </ul>
                                 <p>{{ $post_popular->description }}</p>
-                                <a href="{{ route('post_detail.index', ['id' => $post_popular->id]) }}" class="btn btn-outline-primary">Đọc thêm</a>
+                                <a href="{{ route('post_detail.index', ['id' => $post_popular->id]) }}"
+                                    class="btn btn-outline-primary">Đọc thêm</a>
                             </div>
                         </article>
                     @endif

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->longtext('introduct')->nullable();
             $table->enum('type', [User::TYPE_ADMIN, User::TYPE_MENBER])->default(User::TYPE_MENBER);
             $table->string('password');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
