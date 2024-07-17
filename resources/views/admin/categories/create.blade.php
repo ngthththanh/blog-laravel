@@ -55,9 +55,10 @@
                                     class="form-check-input" value="1" checked>
                                 <label class="form-check-label" for="flexSwitchCheckRightDisabled">Trạng thái</label>
                             </div>
-
-                            <div class="text-end">
-                                <button type="submit" class="btn btn-primary">Thêm </button>
+                            <div class="mb-3">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                                </div>
                             </div>
                         </form>
                     </div>

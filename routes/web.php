@@ -1,17 +1,14 @@
 <?php
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PostAllController;
 use App\Http\Controllers\PostDetailController;
-use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('client.home');
+    return view('client.index');
 });
 Auth::routes();
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('post_detail/{id}', [PostDetailController::class, 'index'])->name('post_detail.index');
-Route::get('search_category/{id}', [SearchController::class, 'index'])->name('search_category.index');
-Route::get('search_category_not', [SearchController::class, 'index'])->name('search_category_not.index');
-Route::get('post_all', [PostAllController::class, 'index'])->name('post_all.index');
+Route::get('/', [HomeController::class, 'index'])->name('index');
+Route::get('post_detail/{id}', [HomeController::class, 'post_detail'])->name('post_detail.post_detail');
+Route::get('search_category/{id}', [HomeController::class, 'search_category'])->name('search_category.search_category');
+Route::get('post_all', [HomeController::class, 'post_all'])->name('post_all.post_all');

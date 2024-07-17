@@ -78,17 +78,17 @@
                                     placeholder="Nhập xác nhận mật khẩu">
                             </div>
                             <div class="mb-3">
+                                <label for="employeeName" class="form-label">Địa chỉ</label>
+                                <input type="text" class="form-control" id="employeeName" name="address"
+                                    placeholder="Nhập địa chỉ">
+                            </div>
+                            <div class="mb-3">
                                 <label for="employeeName" class="form-label">Vai trò</label>
                                 <select class="form-select mb-3" aria-label="Default select example" name="type">
                                     <option selected value="menber">Member</option>
                                     <option value="admin">Admin</option>
                                 </select>
                             </div>
-                            {{-- <div class="mb-3">
-                                <label for="employeeName" class="form-label">Địa chỉ</label>
-                                <input type="password" class="form-control" id="employeeName" name="address"
-                                    placeholder="Nhập địa chỉ">
-                            </div> --}}
 
                             <div class="text-end">
                                 <button type="submit" class="btn btn-primary">Thêm </button>

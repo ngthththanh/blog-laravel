@@ -28,7 +28,7 @@ Bài viết
                                 @endif
                                 <div class="col-md-8">
                                     <h3 class="h4 mb-3"><a class="post-title"
-                                            href="{{ route('post_detail.index', ['id' => $post->id]) }}">{{ $post->title }}</a>
+                                            href="{{ route('post_detail.post_detail', ['id' => $post->id]) }}">{{ $post->title }}</a>
                                     </h3>
                                     <ul class="card-meta list-inline">
                                         <li class="list-inline-item">
@@ -56,7 +56,7 @@ Bài viết
                                         </li>
                                     </ul>
                                     <p>{{ $post->excerpt }}</p>
-                                    <a href="{{ route('post_detail.index', ['id' => $post->id]) }}"
+                                    <a href="{{ route('post_detail.post_detail', ['id' => $post->id]) }}"
                                         class="btn btn-outline-primary">Read
                                         More</a>
                                 </div>

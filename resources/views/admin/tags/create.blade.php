@@ -44,13 +44,11 @@
                                 <input type="text" class="form-control" id="employeeName" name="name"
                                     placeholder="Nhập tên thẻ">
                             </div>
-
                             <div class="text-end">
                                 <button type="submit" class="btn btn-primary">Thêm </button>
                             </div>
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>

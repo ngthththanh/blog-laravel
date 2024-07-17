@@ -22,11 +22,11 @@
 
                             <div class="card-body">
                                 <h3 class="h4 mb-3"><a class="post-title"
-                                        href="{{ route('post_detail.index', ['id' => $post_new->id]) }}">{{ $post_new->title }}</a>
+                                        href="{{ route('post_detail.post_detail', ['id' => $post_new->id]) }}">{{ $post_new->title }}</a>
                                 </h3>
                                 <ul class="card-meta list-inline">
                                     <li class="list-inline-item">
-                                        <a href="{{ route('post_detail.index', ['id' => $post_new->id]) }}"
+                                        <a href="{{ route('post_detail.post_detail', ['id' => $post_new->id]) }}"
                                             class="card-meta-author">
                                             @if ($post_new->user->avatar)
                                                 <img src="{{ \Storage::url($post_new->user->avatar) }}" alt="Author Avatar">
@@ -52,7 +52,7 @@
                                     </li>
                                 </ul>
                                 <p>{{ $post_new->description }}</p>
-                                <a href="{{ route('post_detail.index', ['id' => $post_new->id]) }}"
+                                <a href="{{ route('post_detail.post_detail', ['id' => $post_new->id]) }}"
                                     class="btn btn-outline-primary">Đọc thêm</a>
                             </div>
                         </article>
@@ -72,7 +72,7 @@
                                     @endif
                                 </div>
                                 <div class="ml-3">
-                                    <h4><a href="{{ route('post_detail.index', ['id' => $post->id]) }}"
+                                    <h4><a href="{{ route('post_detail.post_detail', ['id' => $post->id]) }}"
                                             class="post-title">{{ $post->title }}</a>
                                     </h4>
                                     <ul class="card-meta list-inline mb-0">
@@ -105,11 +105,11 @@
                             </div>
                             <div class="card-body">
                                 <h3 class="h4 mb-3"><a class="post-title"
-                                        href="{{ route('post_detail.index', ['id' => $post_popular->id]) }}">{{ $post_popular->title }}</a>
+                                        href="{{ route('post_detail.post_detail', ['id' => $post_popular->id]) }}">{{ $post_popular->title }}</a>
                                 </h3>
                                 <ul class="card-meta list-inline">
                                     <li class="list-inline-item">
-                                        <a href="{{ route('post_detail.index', ['id' => $post_new->id]) }}"
+                                        <a href="{{ route('post_detail.post_detail', ['id' => $post_new->id]) }}"
                                             class="card-meta-author">
                                             @if ($post_new->user->avatar)
                                                 <img src="{{ \Storage::url($post_new->user->avatar) }}"
@@ -136,7 +136,7 @@
                                     </li>
                                 </ul>
                                 <p>{{ $post_popular->description }}</p>
-                                <a href="{{ route('post_detail.index', ['id' => $post_popular->id]) }}"
+                                <a href="{{ route('post_detail.post_detail', ['id' => $post_popular->id]) }}"
                                     class="btn btn-outline-primary">Đọc thêm</a>
                             </div>
                         </article>

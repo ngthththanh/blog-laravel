@@ -50,6 +50,7 @@
                                 <th>Tên đăng nhập</th>
                                 <th>Email</th>
                                 <th>Ảnh đại diện</th>
+                                <th>Địa chỉ</th>
                                 <th>Vai trò</th>
                                 <th>Hành động</th>
                             </tr>
@@ -71,6 +72,7 @@
                                     <td>
                                         <img src="{{ Storage::url($item->avatar) }}" width="100px">
                                     </td>
+                                    <td>{{ $item->address }}</td>
                                     <td>{{ $item->type }}</td>
                                     <td>
                                         <div class="dropdown d-inline-block">
@@ -98,8 +100,6 @@
                                                             Delete
                                                         </button>
                                                     </form>
-
-
                                                 </li>
                                             </ul>
                                         </div>

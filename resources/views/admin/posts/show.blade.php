@@ -29,108 +29,99 @@
         </div>
     </div>
     <!-- end page title -->
-    <form action="{{ route('admin.posts.update', $post->id) }}" method="post" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Bài viết - {{ $post->title }}</h4>
-                        <div class="flex-shrink-0">
-                            <div class="form-check form-switch form-switch-right form-switch-md">
-                                <label for="vertical-form-showcode" class="form-label text-muted">Show
-                                    Code</label>
-                                <input class="form-check-input code-switcher" type="checkbox" id="vertical-form-showcode">
-                            </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Bài viết - {{ $post->title }}</h4>
+                    <div class="flex-shrink-0">
+                        <div class="form-check form-switch form-switch-right form-switch-md">
+                            <label for="vertical-form-showcode" class="form-label text-muted">Show
+                                Code</label>
+                            <input class="form-check-input code-switcher" type="checkbox" id="vertical-form-showcode">
                         </div>
-                    </div><!-- end card header -->
-                    <div class="card-body">
-                        <div class="live-preview">
-                            <div class="row">
-                                <!-- Row 1 -->
-                                <div class="mb-3">
-                                    <label class="form-label">Danh mục bài viết</label>
-                                    <input type="text" class="form-control" id="employeeName" name="title"
-                                        value="{{ $post->category->name }}" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="employeeName" class="form-label">Tiêu đề bài viết</label>
-                                    <input type="text" class="form-control" id="employeeName" name="title"
-                                        value="{{ $post->title }}" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="formFile" class="form-label">Ảnh bài viết</label>
-                                    <img class="ms-3 mb-3" src="{{ \Storage::url($post->image) }}" width="100px">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="employeeName" class="form-label">Mã bài viết</label>
-                                    <input type="text" class="form-control" id="employeeName" name="sku"
-                                        value="{{ $post->sku }}" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="employeeName" class="form-label">Slug bài viết</label>
-                                    <input type="text" class="form-control" id="employeeName" name="sku"
-                                        value="{{ $post->slug }}" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="employeeName" class="form-label">Tác giả bài viết</label>
-                                    <input type="text" class="form-control" id="employeeEmail" name="user_id"
-                                        value="{{ $post->user->name }}" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="employeeName" class="form-label">Mô tả ngắn</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea5" rows="5" name="description" readonly>{{ $post->description }}</textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="employeeName" class="form-label">Nội dung</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea5" rows="5" name="content" readonly>{{ $post->content }}</textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="employeeName" class="form-label">Thẻ bài viết</label>
-                                    <input type="text" class="form-control" id="employeeName" name="title"
-                                        value="{{ $post->tags->pluck('name')->implode(', ') }}" readonly>
-                                </div>
-                                <!-- Row 2 -->
-                                <div class="mb-3 d-flex justify-content-start">
-                                    <div class="form-check form-switch form-switch-success">
-                                        {!! $post->is_active
-                                            ? '<span class="badge bg-success">Active</span>'
-                                            : '<span class="badge bg-black">Not active</span>' !!}
+                    </div>
+                </div><!-- end card header -->
+                <div class="card-body">
+                    <div class="live-preview">
+                        <div class="mb-3">
+                            <label class="form-label">Danh mục bài viết</label>
+                            <input type="text" class="form-control" id="employeeName" name="title"
+                                value="{{ $post->category->name }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="employeeName" class="form-label">Tiêu đề bài viết</label>
+                            <input type="text" class="form-control" id="employeeName" name="title"
+                                value="{{ $post->title }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Ảnh bài viết</label>
+                            <img class="ms-3 mb-3" src="{{ \Storage::url($post->image) }}" width="100px">
+                        </div>
+                        <div class="mb-3">
+                            <label for="employeeName" class="form-label">Mã bài viết</label>
+                            <input type="text" class="form-control" id="employeeName" name="sku"
+                                value="{{ $post->sku }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="employeeName" class="form-label">Slug bài viết</label>
+                            <input type="text" class="form-control" id="employeeName" name="sku"
+                                value="{{ $post->slug }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="employeeName" class="form-label">Tác giả bài viết</label>
+                            <input type="text" class="form-control" id="employeeEmail" name="user_id"
+                                value="{{ $post->user->name }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="employeeName" class="form-label">Mô tả ngắn</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea5" rows="5" name="description" readonly>{{ $post->description }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="employeeName" class="form-label">Nội dung</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea5" rows="5" name="content" readonly>{{ $post->content }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="employeeName" class="form-label">Thẻ bài viết</label>
+                            <input type="text" class="form-control" id="employeeName" name="title"
+                                value="{{ $post->tags->pluck('name')->implode(', ') }}" readonly>
+                        </div>
+                        <!-- Row 2 -->
+                        <div class="mb-3 d-flex justify-content-start">
+                            <div class="form-check form-switch form-switch-success">
+                                {!! $post->is_active
+                                    ? '<span class="badge bg-success">Active</span>'
+                                    : '<span class="badge bg-black">Not active</span>' !!}
 
-                                        <label class="form-check-label" for="is_active">Is active</label>
-                                    </div>
+                                <label class="form-check-label" for="is_active">Is active</label>
+                            </div>
 
-                                    <div class="form-check form-switch form-switch-danger ms-3">
-                                        {!! $post->is_trending
-                                            ? '<span class="badge bg-danger">Trending</span>'
-                                            : '<span class="badge bg-black">Not trending</span>' !!}
-                                        <label class="form-check-label" for="is_trending">Is trending</label>
-                                    </div>
+                            <div class="form-check form-switch form-switch-danger ms-3">
+                                {!! $post->is_trending
+                                    ? '<span class="badge bg-danger">Trending</span>'
+                                    : '<span class="badge bg-black">Not trending</span>' !!}
+                                <label class="form-check-label" for="is_trending">Is trending</label>
+                            </div>
 
-                                    <div class="form-check form-switch form-switch-warning ms-3">
-                                        {!! $post->is_popular
-                                            ? '<span class="badge bg-warning">Popular</span>'
-                                            : '<span class="badge bg-black">Not popular</span>' !!}
-                                        <label class="form-check-label" for="is_popular">Is popular</label>
-                                    </div>
+                            <div class="form-check form-switch form-switch-warning ms-3">
+                                {!! $post->is_popular
+                                    ? '<span class="badge bg-warning">Popular</span>'
+                                    : '<span class="badge bg-black">Not popular</span>' !!}
+                                <label class="form-check-label" for="is_popular">Is popular</label>
+                            </div>
 
-                                    <div class="form-check form-switch form-switch-secondary ms-3">
-                                        {!! $post->is_show_home
-                                            ? '<span class="badge bg-info">Show home</span>'
-                                            : '<span class="badge bg-black">Not show home</span>' !!}
-                                        <label class="form-check-label" for="is_show_home">Is show home</label>
-                                    </div>
-                                </div>
-
-
+                            <div class="form-check form-switch form-switch-secondary ms-3">
+                                {!! $post->is_show_home
+                                    ? '<span class="badge bg-info">Show home</span>'
+                                    : '<span class="badge bg-black">Not show home</span>' !!}
+                                <label class="form-check-label" for="is_show_home">Is show home</label>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 @endsection
 @section('script-libs')
     <!-- jquery cdn -->

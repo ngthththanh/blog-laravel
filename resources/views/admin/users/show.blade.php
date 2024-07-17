@@ -69,6 +69,11 @@
                                 <textarea class="form-control" id="exampleFormControlTextarea5" readonly rows="5" name="introduct"></textarea>
                             </div>
                             <div class="mb-3">
+                                <label for="employeeName" class="form-label">Địa chỉ</label>
+                                <input type="text" class="form-control" id="employeeName" name="address"
+                                   value="{{ $user->address }}" readonly>
+                            </div>
+                            <div class="mb-3">
                                 <label for="password" class="form-label">Password:</label>
                                 <div class="input-group">
                                     <input type="password" class="form-control" id="password" name="password" readonly
@@ -81,17 +86,13 @@
                                 </div>
                                 <small class="form-text text-muted">Leave blank to keep the current password.</small>
                             </div>
+
                             <div class="mb-3">
                                 <label for="employeeName" class="form-label">Vai trò</label>
                                 <input type="text" class="form-control" id="employeeName" name="type" readonly
                                     value="{{ $user->type }}">
                             </div>
 
-                            {{-- <div class="mb-3">
-                                <label for="employeeName" class="form-label">Địa chỉ</label>
-                                <input type="password" class="form-control" id="employeeName" name="address"
-                                    placeholder="Nhập địa chỉ">
-                            </div> --}}
 
                         </form>
                     </div>

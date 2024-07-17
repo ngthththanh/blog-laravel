@@ -54,7 +54,6 @@
                                 <th>Trạng thái</th>
                                 <th>Thịnh hành</th>
                                 <th>Phổ biến</th>
-                                <th>Trạng thái</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -121,8 +120,6 @@
                                                             Delete
                                                         </button>
                                                     </form>
-
-
                                                 </li>
                                             </ul>
                                         </div>

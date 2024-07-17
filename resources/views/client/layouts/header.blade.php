@@ -13,7 +13,7 @@
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="{{ route('post_all.index') }}">
+                        <a class="nav-link" href="{{ route('post_all.post_all') }}">
                             Bài viết
                         </a>
                     </li>
@@ -25,7 +25,7 @@
                         <div class="dropdown-menu">
                             @foreach ($categories as $category)
                                 <a class="dropdown-item"
-                                    href="{{ route('search_category.index', $category->id) }}">{{ $category->name }}</a>
+                                    href="{{ route('search_category.search_category', $category->id) }}">{{ $category->name }}</a>
                             @endforeach
                         </div>
 
@@ -49,7 +49,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="contact.html">Liên hệ</a>
                     </li>
-                    {{-- 
+                    {{--
                     <li class="nav-item">
                         <a class="nav-link" href="shop.html">Sản phẩm</a>
                     </li> --}}

@@ -54,8 +54,10 @@
                                 <label class="form-check-label" for="is_active">Trạng thái</label>
                             </div>
 
-                            <div class="text-end">
-                                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                            <div class="mb-3">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                </div>
                             </div>
                         </form>
                     </div>
