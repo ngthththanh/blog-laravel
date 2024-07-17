@@ -30,7 +30,21 @@ class PostController extends Controller
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('categories', 'tags', 'authorName'));
     }
+    public function uploadImage(Request $request)
+    {
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $path = $file->store('news', 'public'); // lưu vào disk 'public' với thư mục 'news'
 
+            $Url = url('storage/'.$path); // tạo URL cho ảnh
+
+            // Đảm bảo URL trả về có cấu trúc đúng với tên miền của bạn
+            return response()->json(['url' => $Url]);
+
+        }
+
+        return response()->json(['error' => 'No image uploaded'], 400);
+    }
     public function store(Request $request)
     {
         $dataPost = $request->except('tags');
