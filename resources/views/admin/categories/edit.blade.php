@@ -11,7 +11,7 @@
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Trang admin</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('admin.categories.index') }}">Danh sách</a></li>
-                        <li class="breadcrumb-item active">Cập nhật danh mục {{ $model->name }}</li>
+                        <li class="breadcrumb-item active">Cập nhật danh mục</li>
                     </ol>
                 </div>
             </div>
@@ -34,25 +34,36 @@
                 <div class="card-body">
                     <div class="live-preview">
                         <form action="{{ route('admin.categories.update', $model->id) }}" method="post"
-                            enctype="multipart/form-data" class="form-horizontal">
+                            enctype="multipart/form-data" novalidate class="needs-validation">
                             @csrf
                             @method('PUT')
-                            <div class="mb-3">
-                                <label for="employeeName" class="form-label">Tên danh mục</label>
-                                <input type="text" class="form-control" id="employeeName" name="name"
-                                    value="{{ $model->name }}">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="employeeName" class="form-label">Tên danh mục</label>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                            id="name" name="name" value="{{ $model->name }}">
+                                        @error('name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-check form-switch form-switch-success form-check-right mb-3">
+                                        <input type="hidden" name="is_active" value="0">
+                                        <!-- Add this hidden input -->
+                                        <input class="form-check-input" type="checkbox" role="switch" id="is_active"
+                                            @if ($model->is_active) checked @endif name="is_active"
+                                            value="1">
+                                        <label class="form-check-label" for="is_active">Trạng thái</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label for="formFile" class="form-label">Ảnh danh mục</label>
+                                    <input class="form-control" type="file" id="formFile" name="cover">
+                                    <img src="{{ \Storage::url($model->cover) }}" alt="" width="100px"
+                                        class="mt-3">
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="formFile" class="form-label">Ảnh danh mục</label>
-                                <input class="form-control" type="file" id="formFile" name="cover">
-                                <img src="{{ \Storage::url($model->cover) }}" alt="" width="100px" class="mt-3">
-                            </div>
-                            <div class="form-check form-switch form-switch-success form-check-right mb-3">
-                                <input type="hidden" name="is_active" value="0"> <!-- Add this hidden input -->
-                                <input class="form-check-input" type="checkbox" role="switch" id="is_active"
-                                    @if ($model->is_active) checked @endif name="is_active" value="1">
-                                <label class="form-check-label" for="is_active">Trạng thái</label>
-                            </div>
+
 
                             <div class="mb-3">
                                 <div class="text-end">

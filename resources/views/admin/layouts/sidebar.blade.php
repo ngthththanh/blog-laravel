@@ -103,6 +103,23 @@
                     </div>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarComment" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarComment">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Bình luận</span>
+
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarComment">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.comments.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh
+                                    sách</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarUser" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarUser">
                         <i class="ri-layout-3-line"></i>

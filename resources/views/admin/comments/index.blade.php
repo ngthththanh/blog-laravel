@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách danh mục
+    Danh sách bình luận
 @endsection
 
 @section('content')
@@ -12,7 +12,7 @@
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard')}}">Tranh admin</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Tranh admin</a></li>
                         <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
@@ -30,9 +30,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách danh mục</h5>
-                    <a class="btn btn-success btn-sm" href="{{ route('admin.categories.create') }}">Thêm mới</a>
-
+                    <h5 class="card-title mb-0">Danh sách bình luận</h5>
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -45,9 +43,8 @@
                                     </div>
                                 </th>
                                 <th data-ordering="false">ID</th>
-                                <th data-ordering="false">Tên Danh mục</th>
-                                <th>Ảnh </th>
-                                <th>Trạng thái</th>
+                                <th data-ordering="false">Người bình luận</th>
+                                <th>Bài bình luận</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -60,13 +57,9 @@
                                                 value="option1">
                                         </div>
                                     </th>
-
                                     <td>{{ $item->id }}</td>
-                                    <td><a href="#!">{{ $item->name }}</a></td>
-                                    <td><img src="{{ Storage::url($item->cover) }}" width="100px"></td>
-                                    <td>{!! $item->is_active
-                                        ? '<span class="badge bg-success">Active</span>'
-                                        : '<span class="badge bg-black">Not active</span>' !!}</td>
+                                    <td><a href="#!">{{ $item->user->name }}</a></td>
+                                    <td><a href="#!">{{ $item->post->title }}</a></td>
                                     <td>
                                         <div class="dropdown d-inline-block">
                                             <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
@@ -74,16 +67,12 @@
                                                 <i class="ri-more-fill align-middle"></i>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a href="{{ route('admin.categories.show', $item->id) }}"
+                                                <li><a href="{{ route('admin.comments.show', $item->id) }}"
                                                         class="dropdown-item"><i
                                                             class="ri-eye-fill align-bottom me-2 text-muted"></i>
                                                         Xem</a></li>
-                                                <li><a href="{{ route('admin.categories.edit', $item->id) }}"
-                                                        class="dropdown-item edit-item-btn"><i
-                                                            class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                        Sửa</a></li>
-                                                <li>
-                                                    <form action="{{ route('admin.categories.destroy', $item->id) }}"
+
+                                                    <form action="{{ route('admin.comments.destroy', $item->id) }}"
                                                         method="POST"
                                                         onsubmit="return confirm('Are you sure you want to delete this item?');">
                                                         @csrf
@@ -93,8 +82,6 @@
                                                             Xóa
                                                         </button>
                                                     </form>
-
-
                                                 </li>
                                             </ul>
                                         </div>

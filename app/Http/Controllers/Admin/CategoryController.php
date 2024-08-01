@@ -5,20 +5,21 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
+    const PATH_VIEW = 'admin.categories.';
+    const PATH_UPLOAD = 'categories';
+
     /**
      * Display a listing of the resource.
      */
-    const PATH_VIEW = 'admin.categories.';
-    const PATH_UPLOAD = 'categories';
     public function index()
     {
-        $data = Category::query()->latest('id')->get();
-
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        $data = Category::latest('id')->get();
+        return view(self::PATH_VIEW . 'index', compact('data'));
     }
 
     /**
@@ -26,7 +27,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view(self::PATH_VIEW . __FUNCTION__);
+        return view(self::PATH_VIEW . 'create');
     }
 
     /**
@@ -34,27 +35,33 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->except(('cover'));
+        $request->validate([
+            'name' => 'required|unique:categories,name',
+        ], [
+            'name.required' => 'Tên danh mục là bắt buộc',
+            'name.unique' => 'Tên danh mục đã được sử dụng',
+        ]);
 
-        $data['is_active'] ??= 0;
+        $data = $request->except('cover');
+        $data['slug'] = Str::slug($data['name']);
+        $data['is_active'] = $request->has('is_active') ? $request->input('is_active') : 0;
 
-        if($request->hasFile('cover')){
+        if ($request->hasFile('cover')) {
             $data['cover'] = Storage::put(self::PATH_UPLOAD, $request->file('cover'));
         }
 
-        Category::query()->create($data);
+        Category::create($data);
 
         return redirect()->route('admin.categories.index');
     }
 
     /**
      * Display the specified resource.
-     *
      */
     public function show(string $id)
     {
-        $model = Category::query()->findOrFail($id);
-        return view(self::PATH_VIEW . __FUNCTION__, compact('model'));
+        $model = Category::findOrFail($id);
+        return view(self::PATH_VIEW . 'show', compact('model'));
     }
 
     /**
@@ -62,44 +69,48 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        $model = Category::query()->findOrFail($id);
-
-        return view(self::PATH_VIEW . __FUNCTION__, compact('model'));
+        $model = Category::findOrFail($id);
+        return view(self::PATH_VIEW . 'edit', compact('model'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        $model = Category::findOrFail($id);
+{
+    // Find the category or fail
+    $model = Category::findOrFail($id);
 
-        // Lấy toàn bộ dữ liệu từ request, ngoại trừ trường 'cover'
-        $data = $request->except('cover');
+    // Validate the request data
+    $request->validate([
+        'name' => 'required|unique:categories,name,' . $id,
+    ], [
+        'name.required' => 'Tên danh mục là bắt buộc',
+        'name.unique' => 'Tên danh mục đã được sử dụng',
+    ]);
 
-        // Bổ sung mặc định cho trường 'is_active' nếu không có giá trị từ request
-        $data['is_active'] ??= 0;
+    // Prepare the data for updating
+    $data = $request->except('cover');
+    $data['slug'] = Str::slug($data['name']);
+    $data['is_active'] = $request->has('is_active') ? $request->input('is_active') : 0;
 
-        // Kiểm tra xem có file 'cover' được gửi lên trong request hay không
-        if ($request->hasFile('cover')) {
-            // Lưu trữ đường dẫn ảnh hiện tại của danh mục sản phẩm
-            $currentCover = $model->cover;
+    // Handle the cover file upload
+    if ($request->hasFile('cover')) {
+        $currentCover = $model->cover;
+        $data['cover'] = Storage::put(self::PATH_UPLOAD, $request->file('cover'));
 
-            // Lưu file 'cover' mới vào storage và cập nhật đường dẫn vào database
-            $data['cover'] = Storage::put(self::PATH_UPLOAD, $request->file('cover'));
-
-            // Xóa file ảnh cũ nếu tồn tại và không phải là file mặc định
-            if ($currentCover && $currentCover !== 'default.jpg' && Storage::exists($currentCover)) {
-                Storage::delete($currentCover);
-            }
+        // Delete the old cover file if it exists and is not the default image
+        if ($currentCover && $currentCover !== 'default.jpg' && Storage::exists($currentCover)) {
+            Storage::delete($currentCover);
         }
-
-        // Cập nhật thông tin của danh mục sản phẩm vào database
-        $model->update($data);
-
-        // Chuyển hướng quay lại trang danh sách danh mục sản phẩm
-        return redirect()->route('admin.categories.index');
     }
+
+    // Update the category with the prepared data
+    $model->update($data);
+
+    // Redirect back to the categories index route with a success message
+    return redirect()->route('admin.categories.index')->with('success', 'Danh mục đã được cập nhật thành công.');
+}
 
     /**
      * Remove the specified resource from storage.
@@ -108,14 +119,12 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        // Kiểm tra và xóa cover từ storage nếu tồn tại
         if ($category->cover && Storage::exists($category->cover)) {
             Storage::delete($category->cover);
         }
 
-        // Xóa đối tượng category
         $category->delete();
 
-        return back()->with('success', 'Xóa danh mục và cover thành công.');
+        return back()->with('success', 'Category and cover image deleted successfully.');
     }
 }

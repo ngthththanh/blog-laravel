@@ -14,6 +14,10 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
     }
+    protected $routeMiddleware = [
+        // ...
+        'admin' => \App\Http\Middleware\CheckAdmin::class,
+    ];
 
     /**
      * Register the commands for the application.

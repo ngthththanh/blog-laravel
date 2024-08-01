@@ -36,18 +36,21 @@
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="live-preview">
-                        <form action="{{ route('admin.tags.update', $tag->id) }}" method="post"
-                            enctype="multipart/form-data" class="form-horizontal">
+                        <form action="{{ route('admin.tags.update', $tag->id) }}" method="post" enctype="multipart/form-data"
+                            novalidate class="needs-validation">
                             @csrf
                             @method('PUT')
+
                             <div class="mb-3">
                                 <label for="employeeName" class="form-label">Tên thẻ</label>
-                                <input type="text" class="form-control" id="employeeName" name="name"
-                                    value="{{ $tag->name }}">
+                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                    id="name" name="name" value="{{ $tag->name }}">
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-
                             <div class="text-end">
-                                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                <button type="submit" class="btn btn-primary">Cập nhật </button>
                             </div>
                         </form>
                     </div>

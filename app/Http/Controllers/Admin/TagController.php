@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Tag;
 use Illuminate\Http\Request;
-use Symfony\Component\Mailer\Header\TagHeader;
 
 class TagController extends Controller
 {
@@ -32,14 +31,19 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request data
-        Tag::create([
-            'name' => $request->input('name'),
+        $request->validate([
+            'name' => 'required|unique:tags,name',
+        ], [
+            'name.required' => 'Tên thẻ là bắt buộc',
+            'name.unique' => 'Tên thẻ đã được sử dụng',
         ]);
+
+        Tag::create($request->only('name'));
 
         // Redirect back with a success message
         return redirect()->route('admin.tags.index');
     }
+
 
     /**
      * Display the specified resource.
@@ -68,13 +72,21 @@ class TagController extends Controller
         $tag = Tag::findOrFail($id);
 
         // Cập nhật tên của Tag
-        $tag->update([
-            'name' => $request->input('name'),
+        $request->validate([
+            'name' => 'required|unique:tags,name',
+        ], [
+            'name.required' => 'Tên thẻ là bắt buộc',
+            'name.unique' => 'Tên thẻ đã được sử dụng',
         ]);
+
+
+        // Cập nhật thông tin của Tag
+        $tag->update($request->only('name'));
 
         // Redirect hoặc trả về response
         return redirect()->route('admin.tags.index');
     }
+
 
 
     /**

@@ -37,20 +37,25 @@
                 <div class="card-body">
                     <div class="live-preview">
                         <form action="{{ route('admin.categories.store') }}" method="post" enctype="multipart/form-data"
-                            class="form-horizontal">
+                            novalidate class="needs-validation">
                             @csrf
-                            <div class="mb-3">
-                                <label for="employeeName" class="form-label">Tên danh mục</label>
-                                <input type="text" class="form-control" id="employeeName" name="name"
-                                    placeholder="Nhập tên danh mục">
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label for="employeeName" class="form-label">Tên danh mục</label>
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                        id="name" name="name" value="{{ old('name') }}">
+                                    @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-6 mb-3">
+                                    <label for="formFile" class="form-label">Ảnh danh mục</label>
+                                    <input class="form-control" type="file" id="formFile" name="cover">
+                                </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="formFile" class="form-label">Ảnh danh mục</label>
-                                <input class="form-control" type="file" id="formFile" name="cover">
-                            </div>
-
-                            <div class="form-check form-switch form-check-right mb-3">
+                            <div class="form-check form-switch form-switch-success form-check-right mb-3">
                                 <input class="form-check-input" type="checkbox" id="is_active" name="is_active"
                                     class="form-check-input" value="1" checked>
                                 <label class="form-check-label" for="flexSwitchCheckRightDisabled">Trạng thái</label>

@@ -37,12 +37,15 @@
                 <div class="card-body">
                     <div class="live-preview">
                         <form action="{{ route('admin.tags.store') }}" method="post" enctype="multipart/form-data"
-                            class="form-horizontal">
+                            novalidate class="needs-validation">
                             @csrf
                             <div class="mb-3">
                                 <label for="employeeName" class="form-label">Tên thẻ</label>
-                                <input type="text" class="form-control" id="employeeName" name="name"
-                                    placeholder="Nhập tên thẻ">
+                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                    id="name" name="name" value="{{ old('name') }}">
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="text-end">
                                 <button type="submit" class="btn btn-primary">Thêm </button>

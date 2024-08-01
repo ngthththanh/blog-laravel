@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Admin\UserController;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::prefix('admin')
     ->as('admin.')
     ->group(function () {
@@ -33,8 +36,7 @@ Route::prefix('admin')
                 Route::get('{id}/edit',         [CategoryController::class, 'edit'])->name('edit');
                 Route::put('{id}/update',       [CategoryController::class, 'update'])->name('update');
                 Route::delete('{id}/destroy',   [CategoryController::class, 'destroy'])->name('destroy');
-
-        });
+            });
         Route::prefix('posts')
             ->as('posts.')
             ->group(function () {
@@ -45,8 +47,7 @@ Route::prefix('admin')
                 Route::get('{id}/edit',         [PostController::class, 'edit'])->name('edit');
                 Route::put('{id}/update',       [PostController::class, 'update'])->name('update');
                 Route::delete('{id}/destroy',   [PostController::class, 'destroy'])->name('destroy');
-
-        });
+            });
         Route::prefix('tags')
             ->as('tags.')
             ->group(function () {
@@ -57,8 +58,7 @@ Route::prefix('admin')
                 Route::get('{id}/edit',         [TagController::class, 'edit'])->name('edit');
                 Route::put('{id}/update',       [TagController::class, 'update'])->name('update');
                 Route::delete('{id}/destroy',   [TagController::class, 'destroy'])->name('destroy');
-
-        });
+            });
         Route::prefix('users')
             ->as('users.')
             ->group(function () {
@@ -69,7 +69,12 @@ Route::prefix('admin')
                 Route::get('{id}/edit',         [UserController::class, 'edit'])->name('edit');
                 Route::put('{id}/update',       [UserController::class, 'update'])->name('update');
                 Route::delete('{id}/destroy',   [UserController::class, 'destroy'])->name('destroy');
-
-        });
-
+            });
+        Route::prefix('comments')
+            ->as('comments.')
+            ->group(function () {
+                Route::get('/',                 [CommentController::class, 'index'])->name('index');
+                Route::get('show/{id}',         [CommentController::class, 'show'])->name('show');
+                Route::delete('{id}/destroy',   [CommentController::class, 'destroy'])->name('destroy');
+            });
     });

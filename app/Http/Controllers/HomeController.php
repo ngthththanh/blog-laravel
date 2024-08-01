@@ -14,15 +14,28 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+        $perPage = 2; // Số bài viết trên mỗi trang
+        $currentPage = $request->input('page', 1); // Lấy số trang hiện tại từ query string, mặc định là trang 1
+
         // Lấy dữ liệu từ bảng tags, categories và posts
         $tags = $this->getTags();
         $categories = $this->getActiveCategories();
-        $posts = $this->getAllPosts();
         $postNew = $this->getLatestPost();
         $postTrending = $this->getTrendingPosts();
         $postPopular = $this->getPopularPost();
+
+        // Lấy tất cả các bài viết
+        $totalPosts = Post::count();
+        $totalPages = ceil($totalPosts / $perPage);
+
+        $posts = Post::with('tags', 'user')
+            ->orderBy('id', 'desc')
+            ->skip(($currentPage - 1) * $perPage)
+            ->take($perPage)
+            ->get();
+
 
         // Truyền dữ liệu ra view
         return view('client/index', [
@@ -32,14 +45,17 @@ class HomeController extends Controller
             'post_new' => $postNew,
             'categories' => $categories,
             'tags' => $tags,
+            'totalPages' => $totalPages,
+            'currentPage' => $currentPage,
         ]);
     }
 
-    public function post_detail(string $id)
+
+    public function post_detail(string $slug)
     {
         $tags = $this->getTags();
         $categories = $this->getActiveCategories();
-        $post = Post::with('tags')->findOrFail($id);
+        $post = Post::with('tags')->where('slug', $slug)->firstOrFail();
 
         return view('client/post_detail', [
             'post' => $post,
@@ -47,6 +63,7 @@ class HomeController extends Controller
             'categories' => $categories,
         ]);
     }
+
 
     public function post_all()
     {
@@ -60,12 +77,31 @@ class HomeController extends Controller
             'tags' => $tags,
         ]);
     }
+    public function search_post(Request $request)
+    {
+        $searchTerm = $request->input('search_post');
 
-    public function search_category($id)
+        // Perform search logic here
+        $searchPosts = Post::where('title', 'LIKE', '%' . $searchTerm . '%')
+                     ->orWhere('content', 'LIKE', '%' . $searchTerm . '%')
+                     ->get();
+
+        $tags = $this->getTags();
+        $categories = $this->getActiveCategories();
+
+        return view('client.search_post', [
+            'search_posts' => $searchPosts,
+            'categories' => $categories,
+            'tags' => $tags,
+        ]);
+    }
+    // app/Http/Controllers/HomeController.php
+
+    public function search_category($slug)
     {
         $tags = $this->getTags();
         $categories = $this->getActiveCategories();
-        $category = Category::findOrFail($id);
+        $category = Category::where('slug', $slug)->firstOrFail();
         $searchCategories = $category->posts()->with('tags', 'user')->get();
 
         return view('client/search_category', [
@@ -75,6 +111,21 @@ class HomeController extends Controller
             'search_categories' => $searchCategories,
         ]);
     }
+    public function search_tag($slug)
+    {
+        $tags = $this->getTags();
+        $categories = $this->getActiveCategories();
+        $category = Category::where('slug', $slug)->firstOrFail();
+        $searchTag = $category->posts()->with('tags', 'user')->get();
+
+        return view('client/search_category', [
+            'tags' => $tags,
+            'categories' => $categories,
+            'category' => $category,
+            'search_tags' => $searchTag,
+        ]);
+    }
+
 
     /**
      * Get all tags.
@@ -93,7 +144,7 @@ class HomeController extends Controller
      */
     private function getActiveCategories()
     {
-        return Category::where('is_active', 1)->get();
+        return Category::where('is_active', 1)->withCount('posts')->get();
     }
 
     /**

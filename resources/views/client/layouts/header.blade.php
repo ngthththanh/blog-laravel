@@ -13,7 +13,7 @@
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="{{ route('post_all.post_all') }}">
+                        <a class="nav-link" href="{{ route('post_all') }}">
                             Bài viết
                         </a>
                     </li>
@@ -25,7 +25,7 @@
                         <div class="dropdown-menu">
                             @foreach ($categories as $category)
                                 <a class="dropdown-item"
-                                    href="{{ route('search_category.search_category', $category->id) }}">{{ $category->name }}</a>
+                                    href="{{ route('search_category', ['slug' => $category->slug]) }}">{{ $category->name }}</a>
                             @endforeach
                         </div>
 
@@ -58,14 +58,10 @@
 
             <div class="order-2 order-lg-3 d-flex align-items-center">
                 <!-- search -->
-                <form class="search-bar">
-                    <input id="search-query" name="s" type="search" placeholder="Tìm kiếm...">
+                <form class="search-bar" action="{{ route('search_post') }}" method="POST">
+                    @csrf
+                    <input id="search-query" name="search_post" type="search" placeholder="Tìm kiếm...">
                 </form>
-
-                <button class="navbar-toggler border-0 order-1" type="button" data-toggle="collapse"
-                    data-target="#navigation">
-                    <i class="ti-menu"></i>
-                </button>
                 <div class="d-flex">
                     <ul class="navbar-nav ms-auto">
                         @guest
@@ -106,12 +102,8 @@
                             </li>
                         @endguest
                     </ul>
-
-
-
                 </div>
             </div>
-
         </nav>
     </div>
 </header>
