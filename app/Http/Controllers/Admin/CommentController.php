@@ -66,11 +66,8 @@ class CommentController extends Controller
     public function destroy(string $id)
     {
         $comment = Comment::findOrFail($id);
-
-
-
         $comment->delete();
 
-        return back()->with('success', 'comment and cover image deleted successfully.');
+        return back()->with('success', 'Xóa bình luận thành công');
     }
 }

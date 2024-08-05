@@ -1,4 +1,5 @@
 @extends('client.layouts.master')
+
 @section('title')
     Chi tiết bài viết {{ $post->title }}
 @endsection
@@ -33,9 +34,9 @@
                             <li class="list-inline-item">
                                 <ul class="card-meta-tag list-inline">
                                     @foreach ($post->tags as $tag)
-                                    <li class="list-inline-item"><a href="tags.html">{{ $tag->name }}</a>
-                                    </li>
-                                @endforeach
+                                        <li class="list-inline-item"><a href="tags.html">{{ $tag->name }}</a>
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </li>
                         </ul>
@@ -46,56 +47,40 @@
                     </article>
 
                 </div>
-
                 <div class="col-lg-9 col-md-12">
                     <div class="mb-5 border-top mt-4 pt-5">
                         <h3 class="mb-4">Bình luận</h3>
-
-                        <div class="media d-block d-sm-flex mb-4 pb-4">
-                            <div class="media-body">
-                                @foreach($post->comments as $comment)
-
-                                <a href="#!" class="h4 d-inline-block mb-3">{{ $comment->user->name }}</a>
-
-                                <p>{{ $comment->content }}
-                                </p>
-
-                                <span class="text-black-800 mr-3 font-weight-600">{{ $comment->created_at }}</span>
-                                <a class="text-primary font-weight-600" href="#!">Reply</a>
-                                @endforeach
-                            </div>
+                        <div class="comment-section" style="max-height: 300px; overflow-y: auto;">
+                            @foreach ($post->comments as $comment)
+                                <div class="media d-block d-sm-flex mb-4 pb-4">
+                                    <div class="media-body">
+                                        <a href="#!" class="h4 d-inline-block mb-3">{{ $comment->user->name }}</a>
+                                        <p>{{ $comment->content }}</p>
+                                        <span class="text-black-800 mr-3 font-weight-600">{{ $comment->created_at }}</span>
+                                        <a class="text-primary font-weight-600" href="#!">Reply</a>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                        {{-- <div class="media d-block d-sm-flex">
-                            <div class="d-inline-block mr-2 mb-3 mb-md-0" href="#">
-                                <img class="mr-3" src="images/post/arrow.png" alt="">
-                                <a href="#!"><img src="images/post/user-02.jpg" class="mr-3 rounded-circle"
-                                        alt=""></a>
-                            </div>
-                            <div class="media-body">
-                                <a href="#!" class="h4 d-inline-block mb-3">Nadia Sultana Tisa</a>
-
-                                <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante
-                                    sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce
-                                    condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                                </p>
-
-                                <span class="text-black-800 mr-3 font-weight-600">April 18, 2020 at 6.25 pm</span>
-                                <a class="text-primary font-weight-600" href="#!">Reply</a>
-                            </div>
-                        </div> --}}
                     </div>
 
                     <div>
                         <h3 class="mb-4">Viết bình luận</h3>
-                        <form action="{{ route('comments.store', $post->id) }}" method="POST">
-                            @csrf
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <textarea class="form-control shadow-none" name="content" rows="7" required></textarea>
+                        @auth
+                            <form action="{{ route('comments.addcomment', $post->id) }}" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+                                        <textarea class="form-control shadow-none" name="content" rows="7" required></textarea>
+                                    </div>
                                 </div>
+                                <button class="btn btn-primary" type="submit">Bình luận</button>
+                            </form>
+                        @else
+                            <div class="alert alert-warning">
+                                Bạn chưa đăng nhập. <a href="{{ route('login') }}">Đăng nhập</a> để bình luận.
                             </div>
-                            <button class="btn btn-primary" type="submit">Bình luận</button>
-                        </form>
+                        @endauth
                     </div>
                 </div>
 

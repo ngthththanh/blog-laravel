@@ -19,15 +19,13 @@
                                         <div class="post-slider slider-sm">
                                             <img src="{{ \Storage::url($post->image) }}" class="card-img" alt="post-thumb"
                                                 style="height:200px; object-fit: cover;">
-
                                         </div>
-
                                     </div>
                                 @else
                                 @endif
                                 <div class="col-md-8">
                                     <h3 class="h4 mb-3"><a class="post-title"
-                                            href="{{ route('post_detail',['slug' => $post->slug]) }}">{{ $post->title }}</a>
+                                            href="{{ route('post_detail', ['slug' => $post->slug]) }}">{{ $post->title }}</a>
                                     </h3>
                                     <ul class="card-meta list-inline">
                                         <li class="list-inline-item">
@@ -54,14 +52,34 @@
                                             </ul>
                                         </li>
                                     </ul>
-                                    <p>{{ $post->excerpt }}</p>
-                                    <a href="{{ route('post_detail',['slug' => $post->slug]) }}"
+                                    <p>{{ $post->description }}</p>
+                                    <a href="{{ route('post_detail', ['slug' => $post->slug]) }}"
                                         class="btn btn-outline-primary">Read
                                         More</a>
                                 </div>
                             </div>
                         </article>
                     @endforeach
+                    <ul class="pagination justify-content-center">
+                        @if ($currentPage > 1)
+                            <li class="page-item">
+                                <a class="page-link" href="{{ request()->url() }}?page={{ $currentPage - 1 }}">&raquo;</a>
+                            </li>
+                        @endif
+
+                        @for ($i = 1; $i <= $totalPages; $i++)
+                            <li class="page-item {{ $i == $currentPage ? 'active' : '' }}">
+                                <a class="page-link"
+                                    href="{{ request()->url() }}?page={{ $i }}">{{ $i }}</a>
+                            </li>
+                        @endfor
+
+                        @if ($currentPage < $totalPages)
+                            <li class="page-item">
+                                <a class="page-link" href="{{ request()->url() }}?page={{ $currentPage + 1 }}">&raquo;</a>
+                            </li>
+                        @endif
+                    </ul>
                 </div>
             </div>
         </div>

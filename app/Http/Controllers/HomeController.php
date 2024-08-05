@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
     /**
-     * Show the application dashboard.
+     * Hiển thị trang.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -26,18 +27,18 @@ class HomeController extends Controller
         $postTrending = $this->getTrendingPosts();
         $postPopular = $this->getPopularPost();
 
-        // Lấy tất cả các bài viết
+        // Lấy tổng số bài viết
         $totalPosts = Post::count();
         $totalPages = ceil($totalPosts / $perPage);
 
+        // Lấy các bài viết, bao gồm các thẻ và người dùng liên quan
         $posts = Post::with('tags', 'user')
             ->orderBy('id', 'desc')
             ->skip(($currentPage - 1) * $perPage)
             ->take($perPage)
             ->get();
 
-
-        // Truyền dữ liệu ra view
+        // Trả về view
         return view('client/index', [
             'posts' => $posts,
             'post_trending' => $postTrending,
@@ -50,11 +51,14 @@ class HomeController extends Controller
         ]);
     }
 
-
+    // Chi tiết bài viết dựa trên slug
     public function post_detail(string $slug)
     {
+        // Lấy dữ liệu từ bảng tags, categories và posts.
+
         $tags = $this->getTags();
         $categories = $this->getActiveCategories();
+        // Tìm kiếm bài post theo slug(id)
         $post = Post::with('tags')->where('slug', $slug)->firstOrFail();
 
         return view('client/post_detail', [
@@ -64,114 +68,202 @@ class HomeController extends Controller
         ]);
     }
 
-
-    public function post_all()
+    // Thêm bình luận vào bài viết
+    public function addcomment(Request $request, Post $post)
     {
+        // Validate
+        $request->validate([
+            'content' => 'required'
+        ]);
+        // Thêm bình luận
+        Comment::create([
+            'post_id' => $post->id,
+            'user_id' => auth()->id(),
+            'content' => $request->content,
+        ]);
+
+        // Trả về view
+        return redirect()->back()->with('success', 'Bình luận đã được thêm.');
+    }
+
+    // Lấy tất cả các bài viết
+    public function post_all(Request $request)
+    {
+        $perPage = 3; // Số bài viết trên mỗi trang
+        $currentPage = $request->input('page', 1); // Lấy số trang hiện tại từ query string, mặc định là trang 1
+
+        // Lấy dữ liệu từ bảng tags, categories và posts
+        $tags = $this->getTags();
+        $categories = $this->getActiveCategories();
+
+        // Lấy tổng số bài viết
+        $totalPosts = Post::count();
+        $totalPages = ceil($totalPosts / $perPage);
+
+        // Lấy các bài viết, bao gồm các thẻ và người dùng liên quan
+        $posts = Post::with('tags', 'user')
+            ->orderBy('id', 'desc')
+            ->skip(($currentPage - 1) * $perPage)
+            ->take($perPage)
+            ->get();
+
+        // Trả về view
+        return view('client/post_all', [
+            'posts' => $posts,
+            'categories' => $categories,
+            'tags' => $tags,
+            'totalPages' => $totalPages,
+            'currentPage' => $currentPage,
+        ]);
+    }
+
+
+    // Hiển thị trang liên hệ
+    public function contact()
+    {
+
         $tags = $this->getTags();
         $categories = $this->getActiveCategories();
         $posts = $this->getAllPosts();
 
-        return view('client/post_all', [
+        return view('client/contact', [
             'posts' => $posts,
             'categories' => $categories,
             'tags' => $tags,
         ]);
     }
-    public function search_post(Request $request)
+
+    // Tìm kiếm bài viết
+    public function search(Request $request)
     {
-        $searchTerm = $request->input('search_post');
+        $perPage = 3; // Số bài viết trên mỗi trang
+        $currentPage = $request->input('page', 1); // Lấy số trang hiện tại từ query string, mặc định là trang 1
 
-        // Perform search logic here
-        $searchPosts = Post::where('title', 'LIKE', '%' . $searchTerm . '%')
-                     ->orWhere('content', 'LIKE', '%' . $searchTerm . '%')
-                     ->get();
-
+        // Lấy dữ liệu từ bảng tags, categories và posts
         $tags = $this->getTags();
         $categories = $this->getActiveCategories();
 
-        return view('client.search_post', [
-            'search_posts' => $searchPosts,
-            'categories' => $categories,
-            'tags' => $tags,
-        ]);
-    }
-    // app/Http/Controllers/HomeController.php
+        // Lấy tổng số bài viết
+        $totalPosts = Post::count();
+        $totalPages = ceil($totalPosts / $perPage);
 
-    public function search_category($slug)
+        // Lấy từ khóa tìm kiếm từ request
+        $search = $request->search;
+
+        // Tìm kiếm các bài viết dựa trên từ khóa
+        $posts = Post::where(function ($query) use ($search) {
+            $query->where('title', 'like', "%$search%")
+                ->orWhere('description', 'like', "%$search%");
+        })
+            ->orWhereHas('category', function ($query) use ($search) {
+                $query->where('name', 'like', "%$search%");
+            })
+            ->orWhereHas('tags', function ($query) use ($search) {
+                $query->where('name', 'like', "%$search%");
+            })
+            ->orWhereHas('user', function ($query) use ($search) {
+                $query->where('name', 'like', "%$search%");
+            })
+            ->get();
+
+        // Trả về view
+        return view('client.post_all', compact(
+            'posts',
+            'search',
+            'tags',
+            'categories',
+            'totalPages',
+            'currentPage'
+        ));
+    }
+
+
+    // Tìm kiếm bài viết theo danh mục
+    public function search_category(Request $request, $slug)
     {
+        $perPage = 3; // Số bài viết trên mỗi trang
+        $currentPage = $request->input('page', 1); // Lấy số trang hiện tại từ query string, mặc định là trang 1
+
+        // Lấy dữ liệu từ bảng tags, categories và posts
+        $tags = $this->getTags();
+        $categories = $this->getActiveCategories();
+
+        // Lấy tổng số bài viết
+        $totalPosts = Post::count();
+        $totalPages = ceil($totalPosts / $perPage);
+        // Lấy tất cả các tag và danh mục
         $tags = $this->getTags();
         $categories = $this->getActiveCategories();
         $category = Category::where('slug', $slug)->firstOrFail();
         $searchCategories = $category->posts()->with('tags', 'user')->get();
 
+        // Trả về view
         return view('client/search_category', [
             'tags' => $tags,
             'categories' => $categories,
             'category' => $category,
             'search_categories' => $searchCategories,
+            'totalPages' => $totalPages,
+            'currentPage' => $currentPage,
         ]);
     }
-    public function search_tag($slug)
+
+    // Tìm kiếm bài viết theo thẻ
+    public function search_tag(Request $request, string $name)
     {
+        $perPage = 3; // Số bài viết trên mỗi trang
+        $currentPage = $request->input('page', 1); // Lấy số trang hiện tại từ query string, mặc định là trang 1
+
+        // Lấy dữ liệu từ bảng tags, categories và posts
         $tags = $this->getTags();
         $categories = $this->getActiveCategories();
-        $category = Category::where('slug', $slug)->firstOrFail();
-        $searchTag = $category->posts()->with('tags', 'user')->get();
 
-        return view('client/search_category', [
+        // Lấy tổng số bài viết
+        $totalPosts = Post::count();
+        $totalPages = ceil($totalPosts / $perPage);
+        // Lấy tất cả các tag và danh mục
+
+        $tags = $this->getTags();
+        $categories = $this->getActiveCategories();
+        $tag = Tag::where('name', $name)->firstOrFail();
+        $searchTag = $tag->posts()->with('category', 'user')->get();
+
+        // Trả về view
+        return view('client/search_tag', [
             'tags' => $tags,
             'categories' => $categories,
-            'category' => $category,
+            'tag' => $tag,
             'search_tags' => $searchTag,
+            'totalPages' => $totalPages,
+            'currentPage' => $currentPage,
         ]);
     }
 
-
-    /**
-     * Get all tags.
-     *
-     * @return \Illuminate\Support\Collection
-     */
+    // Lấy tất cả các thẻ
     private function getTags()
     {
-        return DB::table('tags')->pluck('name');
+        return Tag::all();
     }
 
-    /**
-     * Get active categories.
-     *
-     * @return \Illuminate\Support\Collection
-     */
+    // Lấy các danh mục đang hoạt động
     private function getActiveCategories()
     {
         return Category::where('is_active', 1)->withCount('posts')->get();
     }
 
-    /**
-     * Get all posts with tags and user.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
+    // Lấy tất cả các bài viết
     private function getAllPosts()
     {
         return Post::with('tags', 'user')->orderBy('id', 'desc')->get();
     }
 
-    /**
-     * Get the latest post.
-     *
-     * @return \App\Models\Post|null
-     */
+    // Lấy bài viết mới nhất
     private function getLatestPost()
     {
         return Post::with('tags', 'user')->orderBy('created_at', 'desc')->first();
     }
 
-    /**
-     * Get trending posts (latest 3).
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
+    // Lấy các bài viết thịnh hành (mới nhất 3 bài)
     private function getTrendingPosts()
     {
         return Post::with('tags')
@@ -181,11 +273,7 @@ class HomeController extends Controller
             ->get();
     }
 
-    /**
-     * Get the most popular post.
-     *
-     * @return \App\Models\Post|null
-     */
+    // Lấy bài viết phổ biến nhất
     private function getPopularPost()
     {
         return Post::with('tags', 'user')

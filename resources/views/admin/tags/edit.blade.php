@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @section('title')
-   Cập nhật thẻ {{ $tag->name }}
+    Cập nhật thẻ {{ $tag->name }}
 @endsection
 @section('content')
     <div class="row">
@@ -36,8 +36,8 @@
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="live-preview">
-                        <form action="{{ route('admin.tags.update', $tag->id) }}" method="post" enctype="multipart/form-data"
-                            novalidate class="needs-validation">
+                        <form action="{{ route('admin.tags.update', $tag->id) }}" method="post"
+                            enctype="multipart/form-data" novalidate class="needs-validation">
                             @csrf
                             @method('PUT')
 

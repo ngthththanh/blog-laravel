@@ -1,9 +1,8 @@
 @extends('client.layouts.master')
-@section('title')
-Bài viết
-@endsection
+@section('title', 'Bài viết')
+
 @section('content')
-<div class="pt-3"></div>
+    <div class="pt-3"></div>
 
     <section class="section">
         <div class="container">
@@ -15,57 +14,75 @@ Bài viết
                     @foreach ($posts as $post)
                         <article class="card mb-4">
                             <div class="row card-body">
-                                @if (isset($post->image))
+                                @if ($post->image)
                                     <div class="col-md-4 mb-4 mb-md-0">
                                         <div class="post-slider slider-sm">
                                             <img src="{{ \Storage::url($post->image) }}" class="card-img" alt="post-thumb"
                                                 style="height:200px; object-fit: cover;">
-
                                         </div>
-
                                     </div>
-                                @else
                                 @endif
                                 <div class="col-md-8">
-                                    <h3 class="h4 mb-3"><a class="post-title"
-                                            href="{{ route('post_detail', ['slug' => $post->slug]) }}">{{ $post->title }}</a>
+                                    <h3 class="h4 mb-3">
+                                        <a class="post-title" href="{{ route('post_detail', ['slug' => $post->slug]) }}">
+                                            {{ $post->title }}
+                                        </a>
                                     </h3>
                                     <ul class="card-meta list-inline">
                                         <li class="list-inline-item">
-                                            <a href="" class="card-meta-author">
+                                            <a href="#" class="card-meta-author">
                                                 @if ($post->user->avatar)
-                                                    <img src="{{ \Storage::url($post->user->avatar) }}" alt="Author Avatar">
-                                                @else
+                                                    <img src="{{ \Storage::url($post->user->avatar) }}" alt="Author Avatar"
+                                                        style="width:30px; height:30px; object-fit: cover;">
                                                 @endif
                                                 <span>{{ $post->user->name }}</span>
                                             </a>
                                         </li>
                                         <li class="list-inline-item">
-                                            <i class="ti-timer"></i>10 Min To Read
+                                            <i class="ti-timer"></i> 10 Min To Read
                                         </li>
                                         <li class="list-inline-item">
-                                            <i class="ti-calendar"></i>{{ $post->created_at->format('d M, Y') }}
+                                            <i class="ti-calendar"></i> {{ $post->created_at->format('d M, Y') }}
                                         </li>
                                         <li class="list-inline-item">
                                             <ul class="card-meta-tag list-inline">
                                                 @foreach ($post->tags as $tag)
-                                                    <li class="list-inline-item"><a href="tags.html">{{ $tag->name }}</a>
+                                                    <li class="list-inline-item"><a href="#">{{ $tag->name }}</a>
                                                     </li>
                                                 @endforeach
                                             </ul>
                                         </li>
                                     </ul>
-                                    <p>{{ $post->excerpt }}</p>
+                                    <p>{{ $post->description }}</p>
                                     <a href="{{ route('post_detail', ['slug' => $post->slug]) }}"
-                                        class="btn btn-outline-primary">Read
-                                        More</a>
+                                        class="btn btn-outline-primary">Read More</a>
                                 </div>
                             </div>
                         </article>
                     @endforeach
+                    <!-- Thêm phân trang thủ công -->
+                    <ul class="pagination justify-content-center">
+                        @if ($currentPage > 1)
+                            <li class="page-item">
+                                <a class="page-link" href="{{ request()->url() }}?page={{ $currentPage - 1 }}">&raquo;</a>
+                            </li>
+                        @endif
+
+                        @for ($i = 1; $i <= $totalPages; $i++)
+                            <li class="page-item {{ $i == $currentPage ? 'active' : '' }}">
+                                <a class="page-link"
+                                    href="{{ request()->url() }}?page={{ $i }}">{{ $i }}</a>
+                            </li>
+                        @endfor
+
+                        @if ($currentPage < $totalPages)
+                            <li class="page-item">
+                                <a class="page-link" href="{{ request()->url() }}?page={{ $currentPage + 1 }}">&raquo;</a>
+                            </li>
+                        @endif
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
-
 @endsection

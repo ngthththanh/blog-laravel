@@ -33,13 +33,21 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate(
+            [
+                'title' => 'required',
+            ],
+            [
+                'title.required' => 'Tiêu đề bài viết là bắt buộc',
+            ]
+        );
         $dataPost = $request->except('tags');
         $dataPost['is_active'] = $request->has('is_active') ? 1 : 0;
         $dataPost['is_popular'] = $request->has('is_popular') ? 1 : 0;
         $dataPost['is_show_home'] = $request->has('is_show_home') ? 1 : 0;
         $dataPost['is_trending'] = $request->has('is_trending') ? 1 : 0;
         $dataPost['slug'] = Str::slug($dataPost['title']) . '-' . $dataPost['sku'];
-        $dataPost['user_id'] = Auth::id();  // Set the logged-in user as the post author
+        $dataPost['user_id'] = Auth::id();
 
         if ($request->hasFile('image')) {
             $dataPost['image'] = $request->file('image')->store('posts', 'public');
@@ -51,15 +59,14 @@ class PostController extends Controller
             $post->tags()->attach($request->tags);
         }
 
-        return redirect()->route('admin.posts.index')->with('success', 'Post created successfully.');
+        return redirect()->route('admin.posts.index')->with('success', 'Thêm mới bài viết thành công');
     }
 
     public function show(string $id)
     {
         $post = Post::with(['category', 'tags', 'user'])->findOrFail($id);
-        $categories = Category::pluck('name', 'id')->all(); // Assuming you want to display all categories
-        $tags = Tag::pluck('name', 'id')->all(); // Assuming you want to display all tags
-
+        $categories = Category::pluck('name', 'id')->all();
+        $tags = Tag::pluck('name', 'id')->all();
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('post', 'categories', 'tags'));
     }
@@ -76,6 +83,14 @@ class PostController extends Controller
 
     public function update(Request $request, string $id)
     {
+        $request->validate(
+            [
+                'title' => 'required',
+            ],
+            [
+                'title.required' => 'Tiêu đề bài viết là bắt buộc',
+            ]
+        );
         $post = Post::findOrFail($id);
         $dataPost = $request->except('tags');
         $dataPost['is_active'] = $request->has('is_active') ? 1 : 0;
@@ -83,7 +98,7 @@ class PostController extends Controller
         $dataPost['is_show_home'] = $request->has('is_show_home') ? 1 : 0;
         $dataPost['is_trending'] = $request->has('is_trending') ? 1 : 0;
         $dataPost['slug'] = Str::slug($dataPost['title']) . '-' . $dataPost['sku'];
-        $dataPost['user_id'] = Auth::id();  // Set the logged-in user as the post author
+        $dataPost['user_id'] = Auth::id();
 
         if ($request->hasFile('image')) {
             $dataPost['image'] = $request->file('image')->store('posts', 'public');
@@ -95,7 +110,7 @@ class PostController extends Controller
             $post->tags()->sync($request->tags);
         }
 
-        return redirect()->route('admin.posts.index')->with('success', 'Post updated successfully.');
+        return redirect()->route('admin.posts.index')->with('success', 'Cập nhật bài viết thành công');
     }
 
     public function destroy(string $id)
@@ -104,6 +119,6 @@ class PostController extends Controller
         $post->tags()->detach();
         $post->delete();
 
-        return redirect()->route('admin.posts.index')->with('success', 'Post deleted successfully.');
+        return redirect()->route('admin.posts.index')->with('success', 'Xóa bài viết thành công');
     }
 }

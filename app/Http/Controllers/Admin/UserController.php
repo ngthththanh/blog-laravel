@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -27,7 +28,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view(self::PATH_VIEW . __FUNCTION__);
+        $addresses = Address::all();
+        return view('admin.users.create', compact('addresses'));
     }
 
     /**
@@ -43,7 +45,7 @@ class UserController extends Controller
 
         User::query()->create($data);
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.users.index')->with('success', 'Thêm mới người dùng thành công');
     }
 
     /**
@@ -72,28 +74,21 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        // Get all data from the request except the 'avatar' field
         $data = $request->except('avatar');
 
-        // Check if there's a file uploaded for 'avatar'
         if ($request->hasFile('avatar')) {
-            // Store the current avatar path
             $currentAvatar = $user->avatar;
 
-            // Store the new 'avatar' file in storage and update the path in the database
             $data['avatar'] = Storage::put(self::PATH_UPLOAD, $request->file('avatar'));
 
-            // Delete the old avatar file if it exists and is not the default one
             if ($currentAvatar && $currentAvatar !== 'default.jpg' && Storage::exists($currentAvatar)) {
                 Storage::delete($currentAvatar);
             }
         }
 
-        // Update the user's data in the database
         $user->update($data);
 
-        // Redirect back to the user list page
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.users.index')->with('success', 'Cập nhật người dùng thành công');
     }
 
     /**
@@ -103,14 +98,12 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        // Check and delete the avatar from storage if it exists
         if ($user->avatar && Storage::exists($user->avatar)) {
             Storage::delete($user->avatar);
         }
 
-        // Delete the user
         $user->delete();
 
-        return back()->with('success', 'User and avatar deleted successfully.');
+        return back()->with('success', 'Xóa người dùng thành công');
     }
 }

@@ -40,57 +40,61 @@
                         <form action="{{ route('admin.users.store') }}" method="post" enctype="multipart/form-data"
                             class="form-horizontal">
                             @csrf
-                            <div class="mb-3">
-                                <label for="employeeName" class="form-label">Tên</label>
-                                <input type="text" class="form-control" id="employeeName" name="name" readonly
+                            <div class="row">
+                                <div class="mb-3 col-6">
+                                    <label for="employeeName" class="form-label">Tên người dùng</label>
+                                    <input type="text" class="form-control" id="employeeName" name="name"
                                     value="{{ $user->name }}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="employeeName" class="form-label">Tên đăng nhập</label>
-                                <input type="text" class="form-control" id="employeeName" name="username" readonly
-                                    value="{{ $user->username }}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="employeeName" class="form-label">Email</label>
-                                <input type="text" class="form-control" id="employeeEmail" name="email" readonly
-                                    value="{{ $user->email }}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="employeeName" class="form-label">Số điện thoại</label>
-                                <input type="text" class="form-control" id="employeePhone" name="phone" readonly
-                                    value="{{ $user->phone }}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="formFile" class="form-label">Ảnh đại diện</label>
-                                <img class="ms-3" src="{{ \Storage::url($user->avatar) }}" alt="" width="100px">
-                            </div>
-                            <div class="mb-3">
-                                <label for="employeeName" class="form-label">Giới thiệu</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea5" readonly rows="5" name="introduct"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="employeeName" class="form-label">Địa chỉ</label>
-                                <input type="text" class="form-control" id="employeeName" name="address"
-                                   value="{{ $user->address }}" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password:</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" id="password" name="password" readonly
-                                        value="{{ $user->password }}">
-                                    <div class="input-group-append">
-                                        <span class="input-group-text" onclick="togglePasswordVisibility()">
-                                            <i id="password-icon" class="fa-solid fa-eye"></i>
-                                        </span>
-                                    </div>
                                 </div>
-                                <small class="form-text text-muted">Leave blank to keep the current password.</small>
+                                <div class="mb-3 col-6">
+                                    <label for="employeeName" class="form-label">Tên đăng nhập</label>
+                                    <input type="text" class="form-control" id="employeeName" name="username"
+                                    value="{{ $user->username }}">
+                                </div>
                             </div>
-
+                            <div class="row">
+                                <div class="mb-3 col-6">
+                                    <label for="employeeName" class="form-label">Email</label>
+                                    <input type="text" class="form-control" id="employeeEmail" name="email"
+                                        value="{{ $user->email }}">
+                                </div>
+                                <div class="mb-3 col-6">
+                                    <label for="employeeName" class="form-label">Số điện thoại</label>
+                                    <input type="text" class="form-control" id="employeePhone" name="phone"
+                                        value="{{ $user->phone }}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="mb-3 col-6">
+                                    <label for="employeeName" class="form-label">Địa chỉ</label>
+                                    <input type="text" class="form-control" id="employeeName" name="address"
+                                        value=" {{ $user->address }}">
+                                </div>
+                                <div class="mb-3 col-6">
+                                    <label for="employeeName" class="form-label">Giới thiệu</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea5" rows="3" name="introduct">{{ $user->introduct }}</textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="mb-3 col-6">
+                                    <label for="formFile" class="form-label">Ảnh đại diện</label>
+                                    <img class="m-3" src="{{ \Storage::url($user->avatar) }}" alt="" width="100px">
+                                    <input class="form-control" type="file" id="formFile" name="avatar">
+                                </div>
+                                <div class="mb-3 col-6">
+                                    <label for="employeeName" class="form-label">Vai trò</label>
+                                <select class="form-select mb-3" aria-label="Default select example" name="type">
+                                    <option value="admin" {{ $user->type == 'admin' ? 'selected' : '' }}>Admin
+                                    </option>
+                                    <option value="menber" {{ $user->type == 'menber' ? 'selected' : '' }}>Member
+                                    </option>
+                                </select>
+                                </div>
+                            </div>
                             <div class="mb-3">
-                                <label for="employeeName" class="form-label">Vai trò</label>
-                                <input type="text" class="form-control" id="employeeName" name="type" readonly
-                                    value="{{ $user->type }}">
+                                <label for="employeeName" class="form-label">Mật khẩu</label>
+                                <input type="password" class="form-control" id="employeeName" name="password"
+                                    value="{{ $user->password }}">
                             </div>
 
 
@@ -118,6 +122,5 @@
                 passwordIcon.classList.add('fa-eye');
             }
         }
-        </script>
-
+    </script>
 @endsection

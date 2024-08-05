@@ -40,10 +40,8 @@ class TagController extends Controller
 
         Tag::create($request->only('name'));
 
-        // Redirect back with a success message
-        return redirect()->route('admin.tags.index');
+        return redirect()->route('admin.tags.index')->with('success', 'Thêm thẻ thành công');
     }
-
 
     /**
      * Display the specified resource.
@@ -68,10 +66,8 @@ class TagController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Tìm Tag bằng ID
         $tag = Tag::findOrFail($id);
 
-        // Cập nhật tên của Tag
         $request->validate([
             'name' => 'required|unique:tags,name',
         ], [
@@ -79,15 +75,10 @@ class TagController extends Controller
             'name.unique' => 'Tên thẻ đã được sử dụng',
         ]);
 
-
-        // Cập nhật thông tin của Tag
         $tag->update($request->only('name'));
 
-        // Redirect hoặc trả về response
-        return redirect()->route('admin.tags.index');
+        return redirect()->route('admin.tags.index')->with('success', 'Cập nhật thẻ thành công.');
     }
-
-
 
     /**
      * Remove the specified resource from storage.
@@ -96,10 +87,8 @@ class TagController extends Controller
     {
         $tag = Tag::findOrFail($id);
 
-
-        // Xóa đối tượng category
         $tag->delete();
 
-        return back()->with('success', 'Xóa danh mục và cover thành công.');
+        return back()->with('success', 'Xóa thẻ thành công.');
     }
 }

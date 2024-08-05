@@ -52,8 +52,9 @@ class CategoryController extends Controller
 
         Category::create($data);
 
-        return redirect()->route('admin.categories.index');
+        return redirect()->route('admin.categories.index')->with('success', 'Danh mục đã được thêm mới thành công.');
     }
+
 
     /**
      * Display the specified resource.
@@ -77,40 +78,33 @@ class CategoryController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-{
-    // Find the category or fail
-    $model = Category::findOrFail($id);
+    {
+        $model = Category::findOrFail($id);
 
-    // Validate the request data
-    $request->validate([
-        'name' => 'required|unique:categories,name,' . $id,
-    ], [
-        'name.required' => 'Tên danh mục là bắt buộc',
-        'name.unique' => 'Tên danh mục đã được sử dụng',
-    ]);
+        $request->validate([
+            'name' => 'required|unique:categories,name,' . $id,
+        ], [
+            'name.required' => 'Tên danh mục là bắt buộc',
+            'name.unique' => 'Tên danh mục đã được sử dụng',
+        ]);
 
-    // Prepare the data for updating
-    $data = $request->except('cover');
-    $data['slug'] = Str::slug($data['name']);
-    $data['is_active'] = $request->has('is_active') ? $request->input('is_active') : 0;
+        $data = $request->except('cover');
+        $data['slug'] = Str::slug($data['name']);
+        $data['is_active'] = $request->has('is_active') ? $request->input('is_active') : 0;
 
-    // Handle the cover file upload
-    if ($request->hasFile('cover')) {
-        $currentCover = $model->cover;
-        $data['cover'] = Storage::put(self::PATH_UPLOAD, $request->file('cover'));
+        if ($request->hasFile('cover')) {
+            $currentCover = $model->cover;
+            $data['cover'] = Storage::put(self::PATH_UPLOAD, $request->file('cover'));
 
-        // Delete the old cover file if it exists and is not the default image
-        if ($currentCover && $currentCover !== 'default.jpg' && Storage::exists($currentCover)) {
-            Storage::delete($currentCover);
+            if ($currentCover && $currentCover !== 'default.jpg' && Storage::exists($currentCover)) {
+                Storage::delete($currentCover);
+            }
         }
+
+        $model->update($data);
+
+        return redirect()->route('admin.categories.index')->with('success', 'Danh mục đã được cập nhật thành công.');
     }
-
-    // Update the category with the prepared data
-    $model->update($data);
-
-    // Redirect back to the categories index route with a success message
-    return redirect()->route('admin.categories.index')->with('success', 'Danh mục đã được cập nhật thành công.');
-}
 
     /**
      * Remove the specified resource from storage.
@@ -125,6 +119,6 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        return back()->with('success', 'Category and cover image deleted successfully.');
+        return back()->with('success', 'Xóa danh mục thành công.');
     }
 }

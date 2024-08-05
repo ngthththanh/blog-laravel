@@ -10,7 +10,7 @@
 @endsection
 
 @section('title')
-    Thêm mới bài viết
+    Chi tiết bài viết
 @endsection
 
 @section('content')
@@ -69,28 +69,32 @@
                                                                 ? '<span class="badge bg-success">Active</span>'
                                                                 : '<span class="badge bg-black">Not active</span>' !!}
 
-                                                            <label class="form-check-label" for="is_active">Is active</label>
+                                                            <label class="form-check-label" for="is_active">Is
+                                                                active</label>
                                                         </div>
 
                                                         <div class="form-check form-switch form-switch-danger ms-3">
                                                             {!! $post->is_trending
                                                                 ? '<span class="badge bg-danger">Trending</span>'
                                                                 : '<span class="badge bg-black">Not trending</span>' !!}
-                                                            <label class="form-check-label" for="is_trending">Is trending</label>
+                                                            <label class="form-check-label" for="is_trending">Is
+                                                                trending</label>
                                                         </div>
 
                                                         <div class="form-check form-switch form-switch-warning ms-3">
                                                             {!! $post->is_popular
                                                                 ? '<span class="badge bg-warning">Popular</span>'
                                                                 : '<span class="badge bg-black">Not popular</span>' !!}
-                                                            <label class="form-check-label" for="is_popular">Is popular</label>
+                                                            <label class="form-check-label" for="is_popular">Is
+                                                                popular</label>
                                                         </div>
 
                                                         <div class="form-check form-switch form-switch-secondary ms-3">
                                                             {!! $post->is_show_home
                                                                 ? '<span class="badge bg-info">Show home</span>'
                                                                 : '<span class="badge bg-black">Not show home</span>' !!}
-                                                            <label class="form-check-label" for="is_show_home">Is show home</label>
+                                                            <label class="form-check-label" for="is_show_home">Is show
+                                                                home</label>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
@@ -103,7 +107,8 @@
                                             <div class="card-body p-4 border-top border-top-dashed">
                                                 <div class="row">
                                                     <div class="text-center">
-                                                        <img class="ms-3 mb-3" src="{{ \Storage::url($post->image) }}" width="500px">
+                                                        <img class="ms-3 mb-3" src="{{ \Storage::url($post->image) }}"
+                                                            width="500px">
                                                     </div>
                                                 </div>
                                                 <!--end row-->
@@ -113,7 +118,7 @@
                                         <div class="col-lg-12">
                                             <div class="card-body p-4">
                                                 <div class="table-responsive">
-                                                  <p class="fw-bold">{{ $post->description }}</p>
+                                                    <p class="fw-bold">{{ $post->description }}</p>
                                                 </div>
                                                 <div class="border-top border-top-dashed mt-2">
                                                     <p>{!! $post->content !!}</p>

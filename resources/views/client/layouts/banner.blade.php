@@ -5,7 +5,8 @@
                 <h1 class="mb-5">Bạn muốn đọc <br>gì hôm nay?</h1>
                 <ul class="list-inline widget-list-inline">
                     @foreach ($tags as $tag)
-                        <li class="list-inline-item"><a href="tags.html">{{ $tag }}</a>
+                        <li class="list-inline-item"><a
+                                href="{{ route('search_tag', ['name' => $tag->name]) }}">{{ $tag->name }}</a>
                         </li>
                     @endforeach
 

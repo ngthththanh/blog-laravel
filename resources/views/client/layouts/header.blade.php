@@ -28,8 +28,6 @@
                                     href="{{ route('search_category', ['slug' => $category->slug]) }}">{{ $category->name }}</a>
                             @endforeach
                         </div>
-
-
                     </li>
 
                     <li class="nav-item dropdown">
@@ -47,7 +45,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Liên hệ</a>
+                        <a class="nav-link" href="{{ route('contact') }}">Liên hệ</a>
                     </li>
                     {{--
                     <li class="nav-item">
@@ -58,10 +56,16 @@
 
             <div class="order-2 order-lg-3 d-flex align-items-center">
                 <!-- search -->
-                <form class="search-bar" action="{{ route('search_post') }}" method="POST">
+
+                <form class="search-bar" action="{{ route('search') }}" method="POST">
                     @csrf
-                    <input id="search-query" name="search_post" type="search" placeholder="Tìm kiếm...">
+                    <input type="text" name="search" placeholder="Tìm kiếm..." required>
+                    <button class="navbar-toggler border-0 order-1" type="button" data-toggle="collapse"
+                        data-target="#navigation">
+                        <i class="ti-menu"></i>
+                    </button>
                 </form>
+
                 <div class="d-flex">
                     <ul class="navbar-nav ms-auto">
                         @guest

@@ -21,10 +21,11 @@
         </div>
     </div>
     <!-- end page title -->
-
-    <div class="alert alert-danger" role="alert">
-        This is <strong>Datatable</strong> page in wihch we have used <b>jQuery</b> with cnd link!
-    </div>
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
 
     <div class="row">
         <div class="col-lg-12">
@@ -72,16 +73,16 @@
                                                             class="ri-eye-fill align-bottom me-2 text-muted"></i>
                                                         Xem</a></li>
 
-                                                    <form action="{{ route('admin.comments.destroy', $item->id) }}"
-                                                        method="POST"
-                                                        onsubmit="return confirm('Are you sure you want to delete this item?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="dropdown-item remove-item-btn">
-                                                            <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                            Xóa
-                                                        </button>
-                                                    </form>
+                                                <form action="{{ route('admin.comments.destroy', $item->id) }}"
+                                                    method="POST"
+                                                    onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="dropdown-item remove-item-btn">
+                                                        <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                                        Xóa
+                                                    </button>
+                                                </form>
                                                 </li>
                                             </ul>
                                         </div>

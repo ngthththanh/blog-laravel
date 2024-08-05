@@ -12,7 +12,7 @@
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard')}}">Trang admin</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Trang admin</a></li>
                         <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
@@ -22,9 +22,12 @@
     </div>
     <!-- end page title -->
 
-    <div class="alert alert-danger" role="alert">
-        This is <strong>Datatable</strong> page in wihch we have used <b>jQuery</b> with cnd link!
-    </div>
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
 
     <div class="row">
         <div class="col-lg-12">

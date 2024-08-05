@@ -12,7 +12,7 @@
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard')}}">Tranh admin</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Tranh admin</a></li>
                         <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
@@ -22,9 +22,12 @@
     </div>
     <!-- end page title -->
 
-    <div class="alert alert-danger" role="alert">
-        This is <strong>Datatable</strong> page in wihch we have used <b>jQuery</b> with cnd link!
-    </div>
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
 
     <div class="row">
         <div class="col-lg-12">
@@ -32,7 +35,6 @@
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách danh mục</h5>
                     <a class="btn btn-success btn-sm" href="{{ route('admin.categories.create') }}">Thêm mới</a>
-
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -93,8 +95,6 @@
                                                             Xóa
                                                         </button>
                                                     </form>
-
-
                                                 </li>
                                             </ul>
                                         </div>

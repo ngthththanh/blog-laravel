@@ -41,7 +41,8 @@
                             <div class="col-6">
                                 <div class="mb-3">
                                     <label for="employeeName" class="form-label">Tên danh mục</label>
-                                    <input type="text" class="form-control" id="name" name="name" value="{{ $model->name }}">
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        value="{{ $model->name }}">
                                 </div>
                                 <div class="d-flex align-items-center mb-3">
                                     <label class="form-check-label mb-0" for="flexSwitchCheckRightDisabled">Trạng
@@ -49,8 +50,7 @@
                                     <div class="ms-3">
                                         {!! $model->is_active
                                             ? '<span class="badge bg-success">Active</span>'
-                                            : '<span class="badge bg-black">Not active</span>'
-                                        !!}
+                                            : '<span class="badge bg-black">Not active</span>' !!}
                                     </div>
                                 </div>
                             </div>

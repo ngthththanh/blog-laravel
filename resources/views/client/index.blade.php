@@ -22,11 +22,11 @@
 
                             <div class="card-body">
                                 <h3 class="h4 mb-3"><a class="post-title"
-                                        href="{{ route('post_detail',['slug' => $post_new->slug])  }}">{{ $post_new->title }}</a>
+                                        href="{{ route('post_detail', ['slug' => $post_new->slug]) }}">{{ $post_new->title }}</a>
                                 </h3>
                                 <ul class="card-meta list-inline">
                                     <li class="list-inline-item">
-                                        <a href="{{ route('post_detail',['slug' => $post_new->slug])  }}"
+                                        <a href="{{ route('post_detail', ['slug' => $post_new->slug]) }}"
                                             class="card-meta-author">
                                             @if ($post_new->user->avatar)
                                                 <img src="{{ \Storage::url($post_new->user->avatar) }}" alt="Author Avatar">
@@ -64,15 +64,15 @@
                     @foreach ($post_trending as $post)
                         <article class="card mb-4">
                             <div class="card-body d-flex">
-                                <div class="post-slider slider-sm">
-                                    @if (isset($post->image))
-                                        <img src="{{ \Storage::url($post->image) }}" class="card-img-top" alt="post-thumb">
-                                    @else
-                                        <!-- Nếu không có ảnh, có thể để trống src -->
-                                    @endif
-                                </div>
+
+                                @if (isset($post->image))
+                                    <img src="{{ \Storage::url($post->image) }}" class="card-img-sm" alt="post-thumb">
+                                @else
+                                    <!-- Nếu không có ảnh, có thể để trống src -->
+                                @endif
+
                                 <div class="ml-3">
-                                    <h4><a href="{{ route('post_detail',['slug' => $post->slug]) }}"
+                                    <h4><a href="{{ route('post_detail', ['slug' => $post->slug]) }}"
                                             class="post-title">{{ $post->title }}</a>
                                     </h4>
                                     <ul class="card-meta list-inline mb-0">
@@ -105,11 +105,11 @@
                             </div>
                             <div class="card-body">
                                 <h3 class="h4 mb-3"><a class="post-title"
-                                        href="{{ route('post_detail', ['slug' => $post_popular->slug])  }}">{{ $post_popular->title }}</a>
+                                        href="{{ route('post_detail', ['slug' => $post_popular->slug]) }}">{{ $post_popular->title }}</a>
                                 </h3>
                                 <ul class="card-meta list-inline">
                                     <li class="list-inline-item">
-                                        <a href="{{ route('post_detail',['slug' => $post->slug])  }}"
+                                        <a href="{{ route('post_detail', ['slug' => $post->slug]) }}"
                                             class="card-meta-author">
                                             @if ($post_new->user->avatar)
                                                 <img src="{{ \Storage::url($post_new->user->avatar) }}"
@@ -159,14 +159,18 @@
                             <div class="post-slider">
                                 @if (isset($post->image))
                                     <div class="col-md-4 mb-4 mb-md-0">
-                                        <div class="post-slider slider-sm">
-                                            <img src="{{ \Storage::url($post->image) }}" class="card-img" alt="post-thumb" style="height:200px; object-fit: cover;">
+                                        <div class="post-slider slider-sm"
+                                            style="opacity: 1; width: 730px; transform: translate3d(0px, 0px, 0px);">
+                                            <img src="{{ \Storage::url($post->image) }}" class="card-img-top"
+                                                alt="post-thumb">
                                         </div>
                                     </div>
                                 @endif
                             </div>
                             <div class="card-body">
-                                <h3 class="mb-3"><a class="post-title" href="{{ route('post_detail', ['slug' => $post->slug]) }}">{{ $post->title }}</a></h3>
+                                <h3 class="mb-3"><a class="post-title"
+                                        href="{{ route('post_detail', ['slug' => $post->slug]) }}">{{ $post->title }}</a>
+                                </h3>
                                 <ul class="card-meta list-inline">
                                     <li class="list-inline-item">
                                         <a href="author-single.html" class="card-meta-author">
@@ -185,13 +189,15 @@
                                     <li class="list-inline-item">
                                         <ul class="card-meta-tag list-inline">
                                             @foreach ($post->tags as $tag)
-                                                <li class="list-inline-item"><a href="tags.html">{{ $tag->name }}</a></li>
+                                                <li class="list-inline-item"><a href="tags.html">{{ $tag->name }}</a>
+                                                </li>
                                             @endforeach
                                         </ul>
                                     </li>
                                 </ul>
                                 <p>{{ $post->description }}</p>
-                                <a href="{{ route('post_detail', ['slug' => $post->slug]) }}" class="btn btn-outline-primary">Read More</a>
+                                <a href="{{ route('post_detail', ['slug' => $post->slug]) }}"
+                                    class="btn btn-outline-primary">Read More</a>
                             </div>
                         </article>
                     @endforeach
@@ -200,19 +206,22 @@
                     <ul class="pagination justify-content-center">
                         @if ($currentPage > 1)
                             <li class="page-item">
-                                <a class="page-link" href="{{ request()->url() }}?page={{ $currentPage - 1 }}">&raquo;</a>
+                                <a class="page-link"
+                                    href="{{ request()->url() }}?page={{ $currentPage - 1 }}">&raquo;</a>
                             </li>
                         @endif
 
                         @for ($i = 1; $i <= $totalPages; $i++)
                             <li class="page-item {{ $i == $currentPage ? 'active' : '' }}">
-                                <a class="page-link" href="{{ request()->url() }}?page={{ $i }}">{{ $i }}</a>
+                                <a class="page-link"
+                                    href="{{ request()->url() }}?page={{ $i }}">{{ $i }}</a>
                             </li>
                         @endfor
 
                         @if ($currentPage < $totalPages)
                             <li class="page-item">
-                                <a class="page-link" href="{{ request()->url() }}?page={{ $currentPage + 1 }}">&raquo;</a>
+                                <a class="page-link"
+                                    href="{{ request()->url() }}?page={{ $currentPage + 1 }}">&raquo;</a>
                             </li>
                         @endif
                     </ul>
@@ -222,8 +231,9 @@
                     <!-- Search -->
                     <div class="widget">
                         <h4 class="widget-title"><span>Search</span></h4>
-                        <form action="#!" class="widget-search">
-                            <input class="mb-3" id="search-query" name="s" type="search"
+                        <form action="{{ route('search') }}" method="POST" class="widget-search">
+                            @csrf
+                            <input class="mb-3" id="search-query" name="search" type="search"
                                 placeholder="Type &amp; Hit Enter...">
                             <i class="ti-search"></i>
                             <button type="submit" class="btn btn-primary btn-block">Search</button>
@@ -234,7 +244,7 @@
                     <div class="widget widget-about">
                         <h4 class="widget-title">Hi, {{ Auth::user()?->name }}!</h4>
                         <img class="img-fluid"
-                            src="  {{ auth()->user()?->avatar ? \Storage::url(auth()->user()?->avatar) : asset('images/default-avatar.jpg') }}"
+                            src="  {{ auth()->user()?->avatar ? \Storage::url(auth()->user()?->avatar) : asset('theme/client/images/logo.png') }}"
                             alt="Themefisher">
                         <p> {{ Auth::user()?->introduct }}</p>
                         <ul class="list-inline social-icons mb-3">
@@ -255,7 +265,7 @@
 
                     <!-- Promotion -->
                     <div class="promotion">
-                        <img src="images/promotion.jpg" class="img-fluid w-100">
+                        <img src="{{ asset('theme/client/images/promotion.jpg') }}" class="img-fluid w-100">
                         <div class="promotion-content">
                             <h5 class="text-white mb-3">Create Stunning Website!!</h5>
                             <p class="text-white mb-4">Lorem ipsum dolor sit amet, consectetur sociis. Etiam nunc amet
@@ -263,23 +273,6 @@
                             <a href="https://themefisher.com/" class="btn btn-primary">Get Started</a>
                         </div>
                     </div>
-
-                    <!-- authors -->
-                    <div class="widget widget-author">
-                        <h4 class="widget-title">Authors</h4>
-                        <div class="media align-items-center">
-                            <div class="mr-3">
-                                <img class="widget-author-image"
-                                    src="{{ auth()->user()?->avatar ? \Storage::url(auth()->user()?->avatar) : asset('images/default-avatar.jpg') }}">
-                            </div>
-                            <div class="media-body">
-                                <h5 class="mb-1"><a class="post-title" href="author-single.html">
-                                        {{ Auth::user()?->name }}</a></h5>
-                                <span> {{ Auth::user()?->introduct }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Search -->
 
                     <div class="widget">
                         <h4 class="widget-title"><span>Never Miss A News</span></h4>
@@ -302,8 +295,9 @@
                         <ul class="list-unstyled widget-list">
 
                             @foreach ($categories as $category)
-                                <li><a href="{{ route('search_category', $category->id) }}""
-                                        class="d-flex">{{ $category->name }} <small class="ml-auto">({{ $category->posts_count }})</small></a>
+                                <li><a href="{{ route('search_category', ['slug' => $category->slug]) }}""
+                                        class="d-flex">{{ $category->name }} <small
+                                            class="ml-auto">({{ $category->posts_count }})</small></a>
                                 </li>
                             @endforeach
                         </ul>
@@ -312,31 +306,12 @@
                         <h4 class="widget-title"><span>Tags</span></h4>
                         <ul class="list-inline widget-list-inline widget-card">
                             @foreach ($tags as $tag)
-                                <li class="list-inline-item"><a href="tags.html">{{ $tag }}</a></li>
+                                <li class="list-inline-item"><a
+                                        href="{{ route('search_tag', ['name' => $tag->name]) }}">{{ $tag->name }}</a>
+                                </li>
                             @endforeach
                         </ul>
-                    </div><!-- recent post -->
-                    <div class="widget">
-                        <h4 class="widget-title">Recent Post</h4>
-
-                        <!-- post-item -->
-                        {{-- <article class="widget-card">
-                            <div class="d-flex">
-                                <img class="card-img-sm" src="images/post/post-10.jpg">
-                                <div class="ml-3">
-                                    <h5><a class="post-title" href="post/elements/">Elements That You Can Use In This
-                                            Template.</a></h5>
-                                    <ul class="card-meta list-inline mb-0">
-                                        <li class="list-inline-item mb-0">
-                                            <i class="ti-calendar"></i>15 jan, 2020
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </article> --}}
-
                     </div>
-
                     <!-- Social -->
                     <div class="widget">
                         <h4 class="widget-title"><span>Social Links</span></h4>

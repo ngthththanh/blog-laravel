@@ -47,7 +47,7 @@
                                 <div class="mb-3">
                                     <label for="employeeName" class="form-label">Bài viết</label>
                                     <input type="text" class="form-control" id="name" name="name"
-                                        value="{{ $model->post-> title }}">
+                                        value="{{ $model->post->title }}">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="description">Nội dung bình luận</label>
